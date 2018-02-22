@@ -1,0 +1,294 @@
+@import "tool";
+
+.reset;
+
+.mdColorClass;
+.shortcutClass;
+
+html,
+body,
+#animation_container {
+	overflow: hidden;
+	background-color: #D40000;
+	background-image: url(./images/bg.png);
+}
+
+#animation_container {
+	position: relative;
+}
+
+#canvas{
+	//  object-fit: cover;
+	position: absolute;
+}
+
+
+.weixinFaceImage{
+	position: fixed;
+	top: -100vh;
+	img{
+		width: 1px;
+		height: 1px;
+	}
+
+}
+
+#dom_overlay_container{
+	pointer-events: none;
+	overflow: hidden;
+	width: 414px;
+	height: 710px;
+	position: absolute;
+	left: 0px;
+	top: 0px;
+	display: block;
+}
+
+
+#canvasFollower{
+	position: absolute;
+	overflow: hidden;
+	z-index: 9;
+	.scroll{
+		position: absolute;
+	}
+	.pageShadow{
+		display: flex;
+		justify-content: center;
+		align-items: flex-start;
+
+		font-size: 18px;
+		color: #ffffff;
+	}
+
+	.logo{
+		@scale:0.8;
+		//._size(140 * @scale,60 * @scale);
+		.__icon;
+		//background-size: contain;
+		//transform: scale(0.95);
+		img{
+			._size(148 * @scale,57 * @scale);
+			position: relative;
+			left:0.3em;
+		}
+
+		//background-image: url(../images/logo-1.png);
+	}
+}
+
+.iconArrowUp{
+	position: fixed;
+	._size(48);
+	bottom: 10px;
+	left: 50%;
+	transform: translate(-50%,0);
+	transition:opacity 0.95s;
+	z-index: 50;
+	.__icon;
+	background-image: url(./images/jiantou.png);
+	animation: splash 1.2s linear infinite;
+
+	*[is-page-eof="true"] &{
+		margin-bottom: -50vh;
+	}
+}
+
+
+.musicIcon{
+	position: absolute;
+	top: 10px;
+	right: 10px;
+	overflow: hidden;
+	z-index: 50;
+
+	&.spining{
+		animation: spin 3s linear infinite;
+	}
+
+	img{
+		._size(32);
+		display: block;
+	}
+	&:before{
+		content:"";
+		position: absolute;
+		.expandin;
+		z-index: 8;
+	}
+	.musicCtr{
+		position: absolute;
+		top: -500%;
+
+	}
+
+}
+
+
+.mt-10{margin-top: -1em;}
+.mt-10-i{margin-top: -1em !important;}
+.mt-05{margin-top: -0.5em;}
+.mt-05-i{margin-top: -0.5em !important;}
+
+
+.pageShadow{
+	position: relative;
+	.yinzhang{
+		position: absolute;
+		right: 2.5em;
+		bottom: 2em;
+
+		//bottom: 0;
+		//text-align: right;
+		//margin-right: 0em;
+		//margin-top: 2em;
+		img{
+			width: 50px;
+
+			//margin-right: 1.5em;
+		}
+	}
+}
+
+.pgtext{
+	position: relative;
+	top: 200px;
+	.logo{
+		.center;
+	}
+
+	color: #333;
+	font-size: 16px;
+	text-align: center;
+	width: 70%;
+	max-width: 280px;
+	//background-color: rgba(255, 255, 255, 0.6);
+	line-height: 1.85em;
+
+
+	.logo{
+		text-align: center;
+
+	}
+
+	//分割线
+	.splitLine{
+		display: block;
+		width: 15em;
+		max-width: 100%;
+		margin: -1em auto;
+
+	}
+
+	.fengcai{
+		img{
+			display: block;
+			margin: -1px auto;
+			max-width: 95%;
+		}
+	}
+
+
+
+
+	&.pg3text{
+		//font-size: 18px;
+		//width: 66%;
+		//top: 28px;
+	}
+
+	&.pg4text{
+		//font-size: 14px;
+		width: 72%;
+		//top: 18px;
+	}
+
+
+	&.pg5text{
+		font-size: 14px;
+		//width: 70%;
+		text-align: left;
+
+		.sqcode{
+			display: block;
+			margin: 0.5em auto;
+			width: 176px * 0.75;
+		}
+
+		.text{
+			width: 13em;
+			.center;
+		}
+
+		//margin-top: 1em;
+		//top: 65px;
+
+	}
+}
+
+
+
+.loading{
+	position: fixed;
+	.expandin;
+	background-color: #fff;
+	z-index: 999;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+
+	color: @grey600;
+	font-size: 1.1rem;
+
+	span{
+		display: inline-block;
+		width: 6em;
+		margin-top: -8em;
+	}
+	transition:opacity 0.6s;
+
+	&.lhide{
+		opacity: 0;
+	}
+}
+
+
+@keyframes spin {
+	from{
+		transform: rotate(0deg);
+	}
+	to{
+		transform: rotate(359deg);
+	}
+}
+
+
+@keyframes splash {
+	0%{
+		transform: translate(-50%,0px);
+	}
+
+
+
+	39%{
+		transform: translate(-50%,-20px);
+		opacity: 1;
+	}
+
+	50%{
+		transform: translate(-50%,-24px);
+		opacity: 0;
+	}
+
+	99%{
+		transform: translate(-50%,-24px);
+		opacity: 0;
+	}
+
+
+
+	100%{
+		transform: translate(-50%,0px);
+		opacity: 1;
+	}
+}

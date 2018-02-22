@@ -1,0 +1,1326 @@
+//向全局对象注入对象或者变量
+@__inject:`(function(){
+	var top = this;
+
+	if(top.addUnitToNumber) return;
+
+	var temp_top;
+	top.bindvar = function(key,value){
+		temp_top = top;
+		var arr = key.split(".");
+		var le = arr.length;
+		arr.map(function(subkey,i){
+
+			if(i==le-1){
+				temp_top[subkey] = value;
+			}
+			if(!temp_top[subkey]){
+				temp_top = temp_top[subkey] = {};
+			}
+		});
+	}
+
+	//更换某个变量的数值
+	top.changeValue = function(mixin,valueName,newValue){
+		try{
+			mixin[valueName].value.value[0].value=newValue;
+		}catch(e){
+			lg("changeValue运行出错了！");
+			lg(mixin,valueName,newValue)
+		}
+	};
+
+
+	//给没有单位的数字增加默认单位
+	//如果有单位存在不处理直接返回；
+	top.addUnitToNumber = function(numStr,unitStr,isforce){
+		numStr = (numStr+"").replace(/\b\s/g,"");
+		//带单位
+		if(/[a-zA-Z]+$/.test(numStr)){
+			//不强制
+			if(!isforce){
+				return numStr;
+			//强制
+			}else{
+				return numStr.replace(Regexp["$1"],unitStr);
+			}
+		//不带单位
+		}else{
+			return numStr + unitStr;
+		}
+	};
+
+	//不改变数值大小的情况下，给字数字前面补0，凑成固定长度
+	Number.prototype.prepandZero = function(n,jinzhi){
+		var str = this.toString(jinzhi || 0);
+		if(str.length<n){
+			var nn = n - str.length;
+			while(nn--){
+				str="0"+str;
+			}
+			return str;
+		}
+
+		return str;
+	}
+
+	//快捷log
+	top.lg = console.log;
+
+
+	//通过形如#f80,#fffff, e0e0e0的颜色值获取数字形颜色值
+	top.__strColorToInt = function(strColor){
+		if(strColor.substring(1,0) == "#")  strColor = strColor.substring(1);                                //去井
+		if(strColor.length == 3) strColor = strColor.replace(/\w/g,function(tx){return tx+""+tx});          //3位重复
+		return parseInt("0x"+strColor);
+
+	}
+
+	//传入一个色值（字符串形式和数字形式）和透明度，返回一个包含rgba信息的对象
+	top.__get_rgba_object = function(rgb, alpha){
+		var obj = {};
+		obj.alpha = alpha || 1;
+		var rgbInt = rgb;
+		if(typeof rgbInt=="string")  rgbInt = top.__strColorToInt(rgbInt);
+		obj.r = (rgbInt & 0xff0000)>>16;
+		obj.g = (rgbInt & 0x00ff00)>>8;
+		obj.b = (rgbInt & 0x0000ff)>>0;
+		return obj;
+	}
+
+	//根据一个色值和透明度，返回RGBA，例 255,0,0,0.5 半透明红色
+	top.getRGBA = function(rgb,alpha,simpleMode){
+		var obj = top.__get_rgba_object(rgb,alpha);
+		var rgba = obj.r + "," + obj.g +","+obj.b+","+ obj.alpha;
+		if(simpleMode) return rgba;
+		return "rgba(" + rgba +")";
+	}
+
+	//根据一个色值和透明度，返回ARGB形式的字符串,如#07ff0000 半透明红色
+	top.getARGB = function(rgb,alpha){
+		var o = top.__get_rgba_object(rgb,alpha);
+		return "#"
+			+ (255*o.alpha>>0).prepandZero(2,16)
+			+ o.r.prepandZero(2,16)
+			+ o.g.prepandZero(2,16)
+			+ o.b.prepandZero(2,16)
+		;
+	}
+})()`;
+
+//同时设置行高和高度
+.lineh(@h){ height: ~`addUnitToNumber('@{h}',"px")`; line-height: ~`addUnitToNumber('@{h}',"px")`; }
+.lineh(@lh,@h){ height: ~`addUnitToNumber('@{h}',"px")`; line-height:  ~`addUnitToNumber('@{lh}',"px")`; }
+.line_height(@h){.lineh(@h)};
+.line-height(@h){.lineh(@h)};
+
+//设置补间间隔
+.dura(@time:330ms){ transition-duration:@time; }
+
+//透明度调整
+._alpha(@val:80){ opacity: @val * 0.01; filter: alpha(opacity=@val); }
+
+
+//正常和鼠标划过颜色变化 通过颜色设置
+.hover_cl(@color:#ccc, @color_hover:#fff) when(iscolor(@color_hover)){
+    color: @color;
+    &:hover{color: @color_hover;}
+}
+
+//正常和鼠标划过颜色变化 通过亮度设置
+.hover_cl(@color:#ccc, @lighten:12%) when not(iscolor(@lighten)){
+    color: @color;
+    &:hover{color: lighten(@color,@lighten);}
+}
+
+//正常和鼠标划过颜色变化 通过颜色设置
+.hover_bg(@color:#ccc, @color_hover:#fff) when(iscolor(@color_hover)){
+    background-color: @color;
+    &:hover{background-color: @color_hover;}
+}
+
+//正常和鼠标划过颜色变化 通过亮度设置
+.hover_bg(@color:#ccc, @lighten:12%) when not(iscolor(@lighten)){
+    background-color: @color;
+    &:hover{background-color:lighten(@color,@lighten); }
+}
+
+
+//横向padding
+.padding_h(@value:auto){padding-left: @value; padding-right: @value;}
+//纵向padding
+.padding_v(@value:auto){padding-top: @value; padding-bottom: @value;}
+//横向margin
+.margin_h(@value:auto){margin-left: @value; margin-right: @value;}
+//纵向margin
+.margin_v(@value:auto){margin-top: @value; margin-bottom: @value;}
+
+
+//block尺寸，同时设置长宽
+._size(@size){._size(@size,@size)}
+._size(@width,@height){
+    @c:@__inject;
+    width: ~`addUnitToNumber('@{width}',"px")`;
+    height:~`addUnitToNumber('@{height}',"px")`;
+}
+
+//设置高度时，同时设置line-height
+._size_lh(@width,@height){
+    @c:@__inject;
+    ._size(@width,@height);
+    line-height: ~`addUnitToNumber('@{height}',"px")`;
+}
+
+._size_lh(@s){
+    ._size_lh(@s,@s)
+}
+
+
+//设置尺寸时候，同时设置margin没size尺寸的一般（负）
+._size_rever_margin(@width,@height){
+    @c:@__inject;
+    ._size(@width,@height);
+    @rev_half_w:-@width/2;
+    @rev_half_h:-@height/2;
+    margin-left: ~`addUnitToNumber('@{rev_half_w}',"px")`;
+    margin-top : ~`addUnitToNumber('@{rev_half_h}',"px")`;
+}
+
+._size_rever_margin(@size){
+    ._size_rever_margin(@size,@size);
+}
+
+
+._size_revert_margin_lh(@width,@height){
+    ._size_rever_margin(@width,@height);
+    line-height: ~`addUnitToNumber('@{height}',"px")`;
+}
+
+._size_revert_margin_lh(@size){
+    ._size_revert_margin_lh(@size,@size);
+}
+
+
+//发光效果
+._glow(@color:#fff, @blur:15px){
+    box-shadow: @color 0 0 @blur;
+}
+
+//-------------------------------------------------工具
+.noSelect(){
+    -moz-user-select: none; /*火狐*/
+    -webkit-user-select: none;  /*webkit浏览器*/
+    -ms-user-select: none;   /*IE10*/
+    -khtml-user-select: none; /*早期浏览器*/
+    user-select: none;
+}
+
+//重置ul li
+.planeUl(){ list-style: none; li{ margin: 0;} }
+
+//使inline-blcok（并兼容旧版浏览器）
+.iblock(){
+    display: inline-block;  vertical-align: top;
+    *zoom:1; *display: inline;//ie
+}
+
+//左右上下居中。 通过left margin-left top margin-top结合
+.hv_center(@w;@h;@pos){
+    top: 50%; left: 50%; margin-top: -0.5*@h; margin-left: -0.5*@w; position: @pos;
+}
+
+.hv_center(@w;@h){
+    top: 50%; left: 50%; margin-top: -0.5*@h; margin-left: -0.5*@w;
+}
+
+.vcenter(@h,@vOffset:0px){
+    top: 50%; position: absolute; margin-top: -@h/2 + @vOffset;
+}
+
+.hcenter(@w,@hOffset:0px){
+    left: 50%; position: absolute; margin-left: -@w/2 + @hOffset;
+};
+
+//居中
+.center(){margin-left: auto; margin-right: auto;}
+
+//微软雅黑 雅黑英文 黑体 新宋体
+.yahei(){   font-family: @font_yahei;}
+
+//宋体
+.songti(){  font-family: @font_songti;}
+
+//新宋体
+.xinst(){   font-family: @font_xinst;}
+
+//黑体
+.heiti(){   font-family: @font_heiti;}
+
+@font_zhenghei:"Microsoft JhengHei";
+@font_yahei:"\5FAE\8F6F\96C5\9ED1", "Microsoft YaHei", "\9ED1\4F53", "\65B0\5B8B\4F53";
+@font_songti:"\5B8B\4F53", "SimSun";
+@font_xinst:"\65B0\5B8B\4F53", "NSimSun";
+@font_heiti:"\9ED1\4F53", "SimHei";
+@font_arial:"Arial";
+
+
+
+
+//字符串截取
+.txcut(){ overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+//铺满到容器（一般用户fiex或者absolute定位）
+.expandin(){ width:100%; height:100%; top:0; left:0; }
+.expandin(@pos){position:@pos; .expandin(); }
+
+//kill gap;适用于消除inline-block元素之间的的间距，请设置于inline
+.font_resize(@size:12px){ font-size: 0; >*{font-size: @size;} }
+
+//工具class //请在需要引入的地方写 .toolClass;
+.toolClass(){
+    .clear{font-size: 0; height: 0; width: 0; clear: both;}
+    .center{.center();}
+    .txcut{.txcut();}
+    .planeUl{ .planeUl(); }
+    .noSelect{.noSelect();}
+    .yahei{.yahei();}
+    .heiti{.heiti;}
+    .expandin{.expandin();}
+    .v_hidden{.v_hidden();}
+}
+
+.inblock, .iblock, .div_inline_block{ .iblock(); }
+
+
+//transform缩写形式
+.tsform(@val){
+    -webkit-transform+_:@val; -ms-transform+_:@val; transform+_:@val;
+}
+
+
+
+//缩放，参数2表示其他属性配置
+.ts_scale(@scaleVal:1, @val:""){
+    .tsform(~"scaleX(@{scaleVal}) scaleY(@{scaleVal}) @{val}");
+}
+
+
+//旋转 @ang支持rad,deg单位
+.ts_rotate(@ang){
+    @deg:convert(@ang,"deg");
+    .tsform(rotate(@deg));
+}
+
+//兼容ie的旋转（ie必须设置尺寸，不然无法绕中心旋转）
+.ts_rotate(@ang,@width,@height){
+    .ts_rotate(@ang);
+    .ieRotate(unit(convert(@ang,"deg")),@width,@height);
+}
+
+//兼容ie并且同时设置尺寸
+.ts_rotate(@ang,@size){
+    .ts_rotate(@ang,@size,@size);
+}
+
+
+//reset;
+.reset(){
+    html, body, div, span, applet, object, iframe,h1, h2, h3, h4, h5, h6, p, blockquote, pre,a, abbr, acronym, address, big, cite, code,del, dfn, em,
+    img, ins, kbd, q, s, samp,small, strike, strong, sub, sup, tt, var,b, u, i, center, dl, dt, dd, ol, ul, li,fieldset, form, label, legend,table, caption,
+    tbody, tfoot, thead, tr, th, td,article, aside, canvas, details, embed, figure, figcaption, footer, header, menu, nav, output, ruby, section,
+    summary,time, mark, audio, video {
+        margin: 0;padding: 0;border: 0;font-size: 100%;font-family: inherit;vertical-align: baseline;
+    }
+
+    h1, h2, h3, h4, h5, h6{ font-weight: 700;}
+
+    /* HTML5 display-role reset for older browsers */
+    article, aside, details, figcaption, figure, footer, header, menu, nav, section { display: block;}
+    body {line-height: 1; font-size: 12px;}
+    ol, ul{ list-style: none; }
+    blockquote, q {quotes: none;}
+    blockquote:before, blockquote:after, q:before, q:after {content: '';content: none;}table {border-collapse: collapse;border-spacing: 0;}
+
+    i,em{font-style: normal;}
+    a{ text-decoration: none;}
+}
+
+
+//默认变量
+@cell:12px;
+@fsize:12px;
+
+
+//ie旋转
+//@ang只支持deg
+.ieRotate(@ang,@width,@height){
+    @deg:pi()*2 - unit(convert(unit(@ang,deg),"rad"));          //ie角度正好和w3c旋转相反
+    @sin:sin(@deg);
+    @cos:cos(@deg);
+    @fsin:-@sin;
+    @fcos:-@cos;
+
+    @w:unit(@width);
+    @h:unit(@height);
+    @dx:-@w/2*@cos+@h/2*@sin+@w/2;
+    @dy:-@w/2*@sin - @h/2*@cos+@h/2;
+
+    filter:progid:DXImageTransform.Microsoft.Matrix(Dx=@dx, Dy=@dy,M11=@cos,M12=@sin,M21=@fsin,M22=@cos,sizingMethod="auto expand");
+    //width: @width;
+    //height: @height;
+}
+
+//ie 的旋转
+.ieRotate(@ang,@size){
+    .ieRotate(@ang, @size, @size);
+}
+
+
+
+//形成三角
+.triangle(@size,@dir:left,@color:#08c,@blankColor:transparent){
+    border: @size solid @blankColor; border-@{dir}-width: 0; ._size(0); font-size: 0; line-height: 0; &:extend(.iblock); vertical-align: middle;
+
+    @rev_dir:~`(function(){
+		var dir = ({left:"right", top:"bottom", right:"left", bottom:"top"})["@{dir}"];
+		return dir || "left";
+	})()`;
+
+    border-@{rev_dir}-color:@color;
+}
+
+//形成斜三角(45整数倍三角)
+.triangle45(@size,@dira:left,@dirb:bottom,@color:#08c,@blankColor:transparent){
+    border: @blankColor solid @size/2;
+    border-@{dira}-color:@color;
+    border-@{dirb}-color:@color;
+    line-height: 0;
+    font-size: 0;
+    ._size(0);
+    &:extend(.iblock);
+}
+//----形成三角
+
+._icon(@size, @src:none){
+    ._icon(@size, @size, @src);
+}
+._icon(@width,@height,@src){
+    @ssrc:e(@src);
+    @url:~`"@{ssrc}"=="none"?"none":("url("+ "@{ssrc}" +")")`;
+    background-image: @url; ._size(@width,@height);
+    &:extend(.__icon); &:extend(.iblock);
+}
+.__icon{background-repeat: no-repeat; background-position: 50% 50%;}
+
+
+// 不可见，但是仍可以加载
+.v_hidden(){
+    position: absolute;
+    clip:rect(1px 1px 1px 1px);//ie6/7
+    clip:rect(1px, 1px, 1px, 1px);//standard
+}
+
+
+
+//用来生一个宽度序列
+//参数1 @main_w有三种形式
+//  形式1:1000px              表示总宽度为1000,单元格间距为0
+//  形式2:1000px 12px         表示总宽度为1000,单元格间距为12px，无两边空白
+//  形式3:1000px _12px        表示总宽度为1000,单元格间距为12px，两边有空白
+//参数2 @col_width_list 传入1-(n-1)各单元格宽度,最后一个单元格宽度由计算获得
+//举例 .row1{.gen_grid(1000px 10px,60px,100px,90px,88px, 180px); >*{.iblock};}
+.gen_grid(@main_w__gap,@col_width_list){
+    @leng:length(@col_width_list);
+
+    //分析第一参数
+    @p_list:`(function(index){
+		index = index || 0;
+		var para = "@{main_w__gap}".replace(/\[|\]|,/g,"");
+		var leng = @{leng};
+		var ar = para.split(" ");
+		ar[1] = ar[1] || "0px";
+		var main_w = ar[0];
+		var gap_w=ar[1].replace(/^_|\-/,"");
+		if(/^\_/.test(ar[1])){
+			leng = leng + 2;
+		}else{
+			leng = leng;
+		}
+		var resultList = [main_w, gap_w,leng];
+		return resultList[index-1];
+	})`;
+
+    //提取参数1的定义
+    @main_w:~`@{p_list}(1)`;
+    @gap_w:~`@{p_list}(2)`;
+    @gap_num:~`@{p_list}(3)`;
+
+
+    //计算最后一个单元格宽度
+    @last_w:~`(function(){
+		var arg = eval("@{col_width_list}".replace(/px/g,""));
+		var main_w = parseInt("@{main_w}");
+
+		var gap_num = @{gap_num};
+		var gap_w = parseInt("@{gap_w}");
+		var w=0;
+
+		//只有两列的情况
+		if(arg.length === undefined) arg = [arg];
+
+		arg.map(function(n){
+			w+=n;
+		});
+
+		var lstw = (main_w - w - gap_num*gap_w);
+		bindvar("gd.lastw",lstw);
+		return lstw;
+	})()`;
+
+
+
+
+    width:~`(function(){
+		var main_w = parseInt("@{main_w}");
+		var gap_num = @{gap_num};
+		var leng = @{leng};
+		var gap_w = parseInt("@{gap_w}");
+
+
+		if(gap_num>leng){
+			return (main_w - gap_w) + "px; padding-left:" + gap_w + "px";
+		}else{
+			return main_w + "px";
+		}
+	})()`;
+
+
+    //定义循环
+    .gen_grid_loop(@times,@paras) when(@times >0){
+        .gen_grid_loop(@times - 1, @paras);
+        >.cell-@{times}{
+            width: extract(@paras,@times);
+            margin-right: @gap_w;
+        }
+    }
+
+    //生成1-(n-1)的宽度
+    .gen_grid_loop(@leng , @col_width_list);
+
+    //生成n的宽度
+    @leng_p1:@leng+1;
+    >.cell-last,>.cell-@{leng_p1}{
+        width:unit(@last_w,px);
+    }
+
+    //消除间隔
+    font-size: 0;
+    //white-space: normal;
+
+    //对单元格的一些公共设置
+    >*{
+        &:extend(.iblock); font-size: @fsize;
+    }
+}
+
+.gen_grid_line(@main_w__gap,@col_width_list){
+    .gen_grid(@main_w__gap,@col_width_list);
+    white-space: nowrap;
+    >*{white-space: normal;}
+}
+
+
+//生成列均等的网格布局
+//@main_width整体宽度
+//@gap间隔
+//@n网格猎数
+//@edge_gap间隔是否在边沿
+//@cell_width_offset宽度微调
+.gen_grid_average(@main_width,@n,@gap:0,@edge_gap:false,@cell_width_offset:0){
+    .gen_comm(){
+        padding-top: @gap;
+        padding-bottom: @gap;
+        //margin-left: -@gap/2;
+        text-indent: 0;
+        left: -@gap/2;
+        position: relative;
+        font-size: 0;
+
+        >*{
+            &:extend(.iblock);
+            font-size: 14px;
+            min-height: @gap;
+            margin-bottom: @gap;
+            .margin_h(@gap/2);
+        }
+    }
+    .gen(@main_width,@gap,@n,@edge_gap) when(@edge_gap = true){
+        @cellw:(@main_width - (@n + 1)*@gap)/@n + @cell_width_offset;
+        width: @main_width;
+        padding-left: @gap;
+        >*{
+            width: @cellw;
+        }
+    }
+
+    .gen(@main_width,@gap,@n,@edge_gap) when(@edge_gap = false){
+        @cellw:(@main_width - (@n)*@gap)/@n + @cell_width_offset;
+        width: @main_width + @gap;
+
+        >*{
+            width: @cellw;
+        }
+    }
+
+    .gen_comm;
+    .gen(@main_width,@gap,@n,@edge_gap);
+
+}
+
+
+
+
+//ie上需要垂直居中时候，字体大小和容器高度的比率
+@ie7_vm_ratio:0.905;
+
+
+
+//兼容性渐变
+.gradient(@dire; @starColor; @endColor){
+    @ie:"ie";
+    @moz_o:"";
+    @webkit:"";
+    @calc:`(function(me){
+		var dire = '@{dire}';
+		var startColor = '@{starColor}'.replace(/\[|\]/g,"");
+		var endColor = '@{endColor}'.replace(/\[|\]/g,"");
+		var rg = /\{(\w+)\}/g;
+		var all_var = { dire:dire };
+		all_var.webkit_dire = (function(){
+			if(dire=="left")    return "0 0, right 0,";
+			if(dire=="top")     return "0 0, 0 bottom,";
+			if(dire=="right")   return "right 0, 0 0,";
+			if(dire=="bottom")   return "0 bottom, 0 0,";
+		})()
+
+		var so = all_var;
+		so.s_arr = startColor.split(",");
+		so.s_cl = so.s_arr[0];
+		so.s_alpha = so.s_arr[1] || 1;
+
+		//获得#AARRGGBB形式颜色
+		so.s_cl__ie = getARGB(so.s_cl,so.s_alpha)
+		//rgba(); 形式颜色
+		so.s_rgba = getRGBA(so.s_cl,so.s_alpha);
+
+		var eo = all_var;
+		eo.e_arr = endColor.split(",");
+		eo.e_cl = eo.e_arr[0];
+		eo.e_alpha = eo.e_arr[1] || 1;
+		eo.e_cl__ie = getARGB(eo.e_cl,eo.e_alpha)
+		eo.e_rgba = getRGBA(eo.e_cl,eo.e_alpha);
+
+		//ie下的渐变类型 0垂直 1水平. 默认1
+		all_var.gradientType=1;
+		if(/top|bottom/.test(dire)) all_var.gradientType=0;
+
+		//在某些形式下，ie需要交换起始颜色和结束颜色
+		if(/right|bottom/.test(dire)){
+			var s_temp = all_var.s_cl__ie;
+			all_var.s_cl__ie = all_var.e_cl__ie;
+			all_var.e_cl__ie = s_temp;
+		}
+
+		function rep_val_func(tx,group1,i){ return all_var[group1]; }
+
+		changeValue(me,"ie", "progid:DXImageTransform.Microsoft.gradient(enabled='true',startColorstr={s_cl__ie},endColorstr={e_cl__ie},gradientType={gradientType})" .replace(rg, rep_val_func) );
+		changeValue(me,"moz_o", 'linear-gradient({dire}, {s_rgba}, {e_rgba})' .replace(rg, rep_val_func) );
+		changeValue(me,"webkit", '-webkit-gradient(linear, {webkit_dire} from({s_rgba}), to({e_rgba}))' .replace(rg, rep_val_func) );
+	})(this)`;
+
+    filter:         ~"@{ie}";
+    background:     ~"-moz-@{moz_o}";
+    background:     ~"-o-@{moz_o}" ;
+    background:     ~"@{webkit}";
+}
+
+
+//文字阴影
+.tx_sd(@color:#333,@strength:2){
+    filter:glow(color=@color,strength=@strength);
+    .loop(@n) when(@n > 0 ){
+        .loop(@n - 1);
+        text-shadow+: @color 0 0 3px;
+    }
+    .loop(@strength);
+}
+
+
+
+//半透明背景，兼容ie
+.bgcolor_alpha(@bgcolor: rgba(0,0,0,.51)){
+    filter:progid:DXImageTransform.Microsoft.gradient(enabled='true',startColorstr = argb(@bgcolor), endColorstr=argb(@bgcolor));
+    background-color:@bgcolor;
+}
+
+.bgcolor_alpha(@rgb,@alpha){
+    @rgba:~`(function(){
+		var obj = __get_rgba_object('@{rgb}',@{alpha});
+		return getRGBA('@{rgb}',@{alpha});
+	})(this)`;
+
+    @argb_16:~`(function(){
+		return getARGB('@{rgb}',@{alpha})
+	})(this)`;
+
+    filter:progid:DXImageTransform.Microsoft.gradient(enabled='true',startColorstr= @argb_16, endColorstr=@argb_16);
+    background-color:@rgba;
+}
+
+
+//bootstrap对屏幕尺寸的区分
+
+// Phone
+@screen-xs:                  480px;
+@screen-xs-min:              @screen-xs;
+@screen-phone:               @screen-xs-min;
+
+// Small screen / tablet
+@screen-sm:                  768px;
+@screen-sm-min:              @screen-sm;
+@screen-tablet:              @screen-sm-min;
+
+// Medium screen / desktop
+@screen-md:                  992px;
+@screen-md-min:              @screen-md;
+@screen-desktop:             @screen-md-min;
+
+// Large screen / wide desktop
+@screen-lg:                  1200px;
+@screen-lg-min:              @screen-lg;
+@screen-lg-desktop:          @screen-lg-min;
+
+
+
+
+@screen-xs-max:              (@screen-sm-min - 1);
+@screen-sm-max:              (@screen-md-min - 1);
+
+
+@gap:12px;
+@g:12px;
+@fs:14px;
+
+@cl_flat_green:#01BF9D;
+@cl_flat_green1:#01A187;
+
+@cl_flat_greenn:#1FCF6D;
+@cl_flat_greenn1:#1BAE5D;
+
+@cl_flat_blue:#5BABE6;
+@cl_flat_blue1:#217FBC;
+
+@cl_flat_purple:#9C56B9;
+@cl_flat_purple1:#913EB0;
+
+@cl_flat_black:#334960;
+@cl_flat_black1:#2D3D54;
+
+@cl_flat_yellow:#F3C500;
+@cl_flat_yellow1:#F59C00;
+
+@cl_flat_orange:#E87E04;
+@cl_flat_orange1:#D65400;
+
+@cl_flat_red:#EA4B35;
+@cl_flat_red1:#C43926;
+
+@cl_flat_light:#ECF0F1;
+@cl_flat_light1:#BEC3C7;
+
+@cl_flat_gray:#95A5A5;
+@cl_flat_gray1:#7E8C8D;
+
+
+
+//https://github.com/raphaelameaume/gsap-easings-css/blob/master/easings.less
+//加入timing function
+@Power0EaseNone: cubic-bezier(0.250, 0.250, 0.750, 0.750);
+
+@Power1EaseIn: cubic-bezier(0.550, 0.085, 0.680, 0.530);
+@Power1EaseOut: cubic-bezier(0.250, 0.460, 0.450, 0.940);
+@Power1EaseInOut: cubic-bezier(0.455, 0.030, 0.515, 0.955);
+
+@Power2EaseIn: cubic-bezier(0.550, 0.055, 0.675, 0.190);
+@Power2EaseOut: cubic-bezier(0.215, 0.610, 0.355, 1.000);
+@Power2EaseInOut: cubic-bezier(0.645, 0.045, 0.355, 1.000);
+
+@Power3EaseIn: cubic-bezier(0.895, 0.030, 0.685, 0.220);
+@Power3EaseOut: cubic-bezier(0.165, 0.840, 0.440, 1.000);
+@Power3EaseInOut: cubic-bezier(0.770, 0.000, 0.175, 1.000);
+
+@Power4EaseIn: cubic-bezier(0.755, 0.050, 0.855, 0.060);
+@Power4EaseOut: cubic-bezier(0.230, 1.000, 0.320, 1.000);
+@Power4EaseInOut: cubic-bezier(0.860, 0.000, 0.070, 1.000);
+
+@CircEaseIn: cubic-bezier(0.600, 0.040, 0.980, 0.335);
+@CircEaseOut: cubic-bezier(0.075, 0.820, 0.165, 1.000); // wip
+@CircEaseInOut: cubic-bezier(0.785, 0.135, 0.150, 0.860); // wip
+
+@ExpoEaseIn: cubic-bezier(0.950, 0.050, 0.795, 0.035);
+@ExpoEaseOut: cubic-bezier(0.190, 1.000, 0.220, 1.000);
+@ExpoEaseInOut: cubic-bezier(1.000, 0.000, 0.000, 1.000);
+
+@SineEaseIn: cubic-bezier(0.470, 0.000, 0.745, 0.715);
+@SineEaseOut: cubic-bezier(0.390, 0.575, 0.565, 1.000);
+@SineEaseInOut: cubic-bezier(0.445, 0.050, 0.550, 0.950);
+
+
+
+@red50: #ffebee;
+@red100: #ffcdd2;
+@red200: #ef9a9a;
+@red300: #e57373;
+@red400: #ef5350;
+@red500: #f44336;
+@red600: #e53935;
+@red700: #d32f2f;
+@red800: #c62828;
+@red900: #b71c1c;
+@redA100: #ff8a80;
+@redA200: #ff5252;
+@redA400: #ff1744;
+@redA700: #d50000;
+@red: @red500;
+
+@pink50: #fce4ec;
+@pink100: #f8bbd0;
+@pink200: #f48fb1;
+@pink300: #f06292;
+@pink400: #ec407a;
+@pink500: #e91e63;
+@pink600: #d81b60;
+@pink700: #c2185b;
+@pink800: #ad1457;
+@pink900: #880e4f;
+@pinkA100: #ff80ab;
+@pinkA200: #ff4081;
+@pinkA400: #f50057;
+@pinkA700: #c51162;
+@pink: @pink500;
+
+@purple50: #f3e5f5;
+@purple100: #e1bee7;
+@purple200: #ce93d8;
+@purple300: #ba68c8;
+@purple400: #ab47bc;
+@purple500: #9c27b0;
+@purple600: #8e24aa;
+@purple700: #7b1fa2;
+@purple800: #6a1b9a;
+@purple900: #4a148c;
+@purpleA100: #ea80fc;
+@purpleA200: #e040fb;
+@purpleA400: #d500f9;
+@purpleA700: #aa00ff;
+@purple: @purple500;
+
+@deepPurple50: #ede7f6;
+@deepPurple100: #d1c4e9;
+@deepPurple200: #b39ddb;
+@deepPurple300: #9575cd;
+@deepPurple400: #7e57c2;
+@deepPurple500: #673ab7;
+@deepPurple600: #5e35b1;
+@deepPurple700: #512da8;
+@deepPurple800: #4527a0;
+@deepPurple900: #311b92;
+@deepPurpleA100: #b388ff;
+@deepPurpleA200: #7c4dff;
+@deepPurpleA400: #651fff;
+@deepPurpleA700: #6200ea;
+@deepPurple: @deepPurple500;
+
+@indigo50: #e8eaf6;
+@indigo100: #c5cae9;
+@indigo200: #9fa8da;
+@indigo300: #7986cb;
+@indigo400: #5c6bc0;
+@indigo500: #3f51b5;
+@indigo600: #3949ab;
+@indigo700: #303f9f;
+@indigo800: #283593;
+@indigo900: #1a237e;
+@indigoA100: #8c9eff;
+@indigoA200: #536dfe;
+@indigoA400: #3d5afe;
+@indigoA700: #304ffe;
+@indigo: @indigo500;
+
+@blue50: #e3f2fd;
+@blue100: #bbdefb;
+@blue200: #90caf9;
+@blue300: #64b5f6;
+@blue400: #42a5f5;
+@blue500: #2196f3;
+@blue600: #1e88e5;
+@blue700: #1976d2;
+@blue800: #1565c0;
+@blue900: #0d47a1;
+@blueA100: #82b1ff;
+@blueA200: #448aff;
+@blueA400: #2979ff;
+@blueA700: #2962ff;
+@blue: @blue500;
+
+@lightBlue50: #e1f5fe;
+@lightBlue100: #b3e5fc;
+@lightBlue200: #81d4fa;
+@lightBlue300: #4fc3f7;
+@lightBlue400: #29b6f6;
+@lightBlue500: #03a9f4;
+@lightBlue600: #039be5;
+@lightBlue700: #0288d1;
+@lightBlue800: #0277bd;
+@lightBlue900: #01579b;
+@lightBlueA100: #80d8ff;
+@lightBlueA200: #40c4ff;
+@lightBlueA400: #00b0ff;
+@lightBlueA700: #0091ea;
+@lightBlue: @lightBlue500;
+
+@cyan50: #e0f7fa;
+@cyan100: #b2ebf2;
+@cyan200: #80deea;
+@cyan300: #4dd0e1;
+@cyan400: #26c6da;
+@cyan500: #00bcd4;
+@cyan600: #00acc1;
+@cyan700: #0097a7;
+@cyan800: #00838f;
+@cyan900: #006064;
+@cyanA100: #84ffff;
+@cyanA200: #18ffff;
+@cyanA400: #00e5ff;
+@cyanA700: #00b8d4;
+@cyan: @cyan500;
+
+@teal50: #e0f2f1;
+@teal100: #b2dfdb;
+@teal200: #80cbc4;
+@teal300: #4db6ac;
+@teal400: #26a69a;
+@teal500: #009688;
+@teal600: #00897b;
+@teal700: #00796b;
+@teal800: #00695c;
+@teal900: #004d40;
+@tealA100: #a7ffeb;
+@tealA200: #64ffda;
+@tealA400: #1de9b6;
+@tealA700: #00bfa5;
+@teal: @teal500;
+
+@green50: #e8f5e9;
+@green100: #c8e6c9;
+@green200: #a5d6a7;
+@green300: #81c784;
+@green400: #66bb6a;
+@green500: #4caf50;
+@green600: #43a047;
+@green700: #388e3c;
+@green800: #2e7d32;
+@green900: #1b5e20;
+@greenA100: #b9f6ca;
+@greenA200: #69f0ae;
+@greenA400: #00e676;
+@greenA700: #00c853;
+@green: @green500;
+
+@lightGreen50: #f1f8e9;
+@lightGreen100: #dcedc8;
+@lightGreen200: #c5e1a5;
+@lightGreen300: #aed581;
+@lightGreen400: #9ccc65;
+@lightGreen500: #8bc34a;
+@lightGreen600: #7cb342;
+@lightGreen700: #689f38;
+@lightGreen800: #558b2f;
+@lightGreen900: #33691e;
+@lightGreenA100: #ccff90;
+@lightGreenA200: #b2ff59;
+@lightGreenA400: #76ff03;
+@lightGreenA700: #64dd17;
+@lightGreen: @lightGreen500;
+
+@lime50: #f9fbe7;
+@lime100: #f0f4c3;
+@lime200: #e6ee9c;
+@lime300: #dce775;
+@lime400: #d4e157;
+@lime500: #cddc39;
+@lime600: #c0ca33;
+@lime700: #afb42b;
+@lime800: #9e9d24;
+@lime900: #827717;
+@limeA100: #f4ff81;
+@limeA200: #eeff41;
+@limeA400: #c6ff00;
+@limeA700: #aeea00;
+@lime: @lime500;
+
+@yellow50: #fffde7;
+@yellow100: #fff9c4;
+@yellow200: #fff59d;
+@yellow300: #fff176;
+@yellow400: #ffee58;
+@yellow500: #ffeb3b;
+@yellow600: #fdd835;
+@yellow700: #fbc02d;
+@yellow800: #f9a825;
+@yellow900: #f57f17;
+@yellowA100: #ffff8d;
+@yellowA200: #ffff00;
+@yellowA400: #ffea00;
+@yellowA700: #ffd600;
+@yellow: @yellow500;
+
+@amber50: #fff8e1;
+@amber100: #ffecb3;
+@amber200: #ffe082;
+@amber300: #ffd54f;
+@amber400: #ffca28;
+@amber500: #ffc107;
+@amber600: #ffb300;
+@amber700: #ffa000;
+@amber800: #ff8f00;
+@amber900: #ff6f00;
+@amberA100: #ffe57f;
+@amberA200: #ffd740;
+@amberA400: #ffc400;
+@amberA700: #ffab00;
+@amber: @amber500;
+
+@orange50: #fff3e0;
+@orange100: #ffe0b2;
+@orange200: #ffcc80;
+@orange300: #ffb74d;
+@orange400: #ffa726;
+@orange500: #ff9800;
+@orange600: #fb8c00;
+@orange700: #f57c00;
+@orange800: #ef6c00;
+@orange900: #e65100;
+@orangeA100: #ffd180;
+@orangeA200: #ffab40;
+@orangeA400: #ff9100;
+@orangeA700: #ff6d00;
+@orange: @orange500;
+
+@deepOrange50: #fbe9e7;
+@deepOrange100: #ffccbc;
+@deepOrange200: #ffab91;
+@deepOrange300: #ff8a65;
+@deepOrange400: #ff7043;
+@deepOrange500: #ff5722;
+@deepOrange600: #f4511e;
+@deepOrange700: #e64a19;
+@deepOrange800: #d84315;
+@deepOrange900: #bf360c;
+@deepOrangeA100: #ff9e80;
+@deepOrangeA200: #ff6e40;
+@deepOrangeA400: #ff3d00;
+@deepOrangeA700: #dd2c00;
+@deepOrange: @deepOrange500;
+
+@brown50: #efebe9;
+@brown100: #d7ccc8;
+@brown200: #bcaaa4;
+@brown300: #a1887f;
+@brown400: #8d6e63;
+@brown500: #795548;
+@brown600: #6d4c41;
+@brown700: #5d4037;
+@brown800: #4e342e;
+@brown900: #3e2723;
+@brown: @brown500;
+
+@blueGrey50: #eceff1;
+@blueGrey100: #cfd8dc;
+@blueGrey200: #b0bec5;
+@blueGrey300: #90a4ae;
+@blueGrey400: #78909c;
+@blueGrey500: #607d8b;
+@blueGrey600: #546e7a;
+@blueGrey700: #455a64;
+@blueGrey800: #37474f;
+@blueGrey900: #263238;
+@blueGrey: @blueGrey500;
+
+@grey50: #fafafa;
+@grey100: #f5f5f5;
+@grey200: #eeeeee;
+@grey300: #e0e0e0;
+@grey400: #bdbdbd;
+@grey500: #9e9e9e;
+@grey600: #757575;
+@grey700: #616161;
+@grey800: #424242;
+@grey900: #212121;
+@grey: @grey500;
+
+@black: #000000;
+@white: #ffffff;
+
+@transparent: rgba(0, 0, 0, 0);
+@fullBlack: rgba(0, 0, 0, 1);
+@darkBlack: rgba(0, 0, 0, 0.87);
+@lightBlack: rgba(0, 0, 0, 0.54);
+@minBlack: rgba(0, 0, 0, 0.26);
+@faintBlack: rgba(0, 0, 0, 0.12);
+@fullWhite: rgba(255, 255, 255, 1);
+@darkWhite: rgba(255, 255, 255, 0.87);
+@lightWhite: rgba(255, 255, 255, 0.54);
+
+
+.loopColorList(@list){
+    @leng:length(@list);
+    .loop(@n)when(@n>0){
+        @cl:extract(@list,@n);
+        @cl-val:@@cl;
+        .cl-@{cl}{color:@@cl;}
+        .cl-@{cl}-{color:@@cl !important;}
+        .bg-@{cl}{background-color:@@cl;}
+        .bg-@{cl}-{background-color:@@cl !important;}
+        .loop(@n - 1);
+    }
+    .loop(@leng);
+}
+
+
+.mdColorClass(){
+    @colors-list: red50,red100,red200,red300,red400,red500,red600,red700,red800,red900,redA100,redA200,redA400,redA700,red,pink50,pink100,pink200,pink300,pink400,pink500,pink600,pink700,pink800,pink900,pinkA100,pinkA200,pinkA400,pinkA700,pink,purple50,purple100,purple200,purple300,purple400,purple500,purple600,purple700,purple800,purple900,purpleA100,purpleA200,purpleA400,purpleA700,purple,deepPurple50,deepPurple100,deepPurple200,deepPurple300,deepPurple400,deepPurple500,deepPurple600,deepPurple700,deepPurple800,deepPurple900,deepPurpleA100,deepPurpleA200,deepPurpleA400,deepPurpleA700,deepPurple,indigo50,indigo100,indigo200,indigo300,indigo400,indigo500,indigo600,indigo700,indigo800,indigo900,indigoA100,indigoA200,indigoA400,indigoA700,indigo,blue50,blue100,blue200,blue300,blue400,blue500,blue600,blue700,blue800,blue900,blueA100,blueA200,blueA400,blueA700,blue,lightBlue50,lightBlue100,lightBlue200,lightBlue300,lightBlue400,lightBlue500,lightBlue600,lightBlue700,lightBlue800,lightBlue900,lightBlueA100,lightBlueA200,lightBlueA400,lightBlueA700,lightBlue,cyan50,cyan100,cyan200,cyan300,cyan400,cyan500,cyan600,cyan700,cyan800,cyan900,cyanA100,cyanA200,cyanA400,cyanA700,cyan,teal50,teal100,teal200,teal300,teal400,teal500,teal600,teal700,teal800,teal900,tealA100,tealA200,tealA400,tealA700,teal,green50,green100,green200,green300,green400,green500,green600,green700,green800,green900,greenA100,greenA200,greenA400,greenA700,green,lightGreen50,lightGreen100,lightGreen200,lightGreen300,lightGreen400,lightGreen500,lightGreen600,lightGreen700,lightGreen800,lightGreen900,lightGreenA100,lightGreenA200,lightGreenA400,lightGreenA700,lightGreen,lime50,lime100,lime200,lime300,lime400,lime500,lime600,lime700,lime800,lime900,limeA100,limeA200,limeA400,limeA700,lime,yellow50,yellow100,yellow200,yellow300,yellow400,yellow500,yellow600,yellow700,yellow800,yellow900,yellowA100,yellowA200,yellowA400,yellowA700,yellow,amber50,amber100,amber200,amber300,amber400,amber500,amber600,amber700,amber800,amber900,amberA100,amberA200,amberA400,amberA700,amber,orange50,orange100,orange200,orange300,orange400,orange500,orange600,orange700,orange800,orange900,orangeA100,orangeA200,orangeA400,orangeA700,orange,deepOrange50,deepOrange100,deepOrange200,deepOrange300,deepOrange400,deepOrange500,deepOrange600,deepOrange700,deepOrange800,deepOrange900,deepOrangeA100,deepOrangeA200,deepOrangeA400,deepOrangeA700,deepOrange,brown50,brown100,brown200,brown300,brown400,brown500,brown600,brown700,brown800,brown900,brown,blueGrey50,blueGrey100,blueGrey200,blueGrey300,blueGrey400,blueGrey500,blueGrey600,blueGrey700,blueGrey800,blueGrey900,blueGrey,grey50,grey100,grey200,grey300,grey400,grey500,grey600,grey700,grey800,grey900,grey,black,white,transparent,fullBlack,darkBlack,lightBlack,minBlack,faintBlack,fullWhite,darkWhite,lightWhite;
+    .loopColorList(@colors-list);
+}
+
+
+
+
+.shortcutClass(){
+    .tr{  text-align: right;}
+    .tc{  text-align: center;}
+    .tl{  text-align: left;}
+
+    .pa{  position: absolute;}
+    .pr{  position: relative;}
+    .ps{  position: static;}
+
+    .bbox   {  box-sizing:  border-box;  }
+    .cbox   {  box-sizing: content-box}
+
+    .wnw        {  white-space: nowrap;  }
+    .hide       {  display: none;  }
+
+    .flex{
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+
+        &.column{       flex-direction      : column;  }
+
+        &.ai-start      {align-items        : flex-start};
+        &.ai-center     {align-items        : center;}
+        &.ai-end        {align-items        : flex-end;}
+        &.ai-stretch    {align-items        : stretch;}
+
+        &.jc-start      {justify-content    : flex-start; }
+        &.jc-center     {justify-content    : center;}
+        &.jc-end        {justify-content    : flex-end;}
+
+        &.jc-between,
+        &.between       {justify-content    : space-between;  }
+
+        &.jc-around,
+        &.around        {justify-content    : space-around;  }
+    }
+
+    .fx1{ flex: 1;}
+
+
+    .of{
+        &.h     {overflow: hidden;}
+        &.ya    {overflow-y: auto;}
+        &.xa    {overflow-x: auto;}
+    }
+
+    .h1px{height:    1px;}
+    .w1px{width:     1px;}
+
+    //.fw100.fw500-i.fw-auto
+    .fwGen(){
+        @list:100 200 300 400 500 600 700;
+        @leng:length(@list);
+        .loop(@n)when(@n > 0){
+            @value:extract(@list,@n);
+            .fw@{value}{font-weight: @value;}
+            .fw@{value}-i{font-weight: @value !important;}
+            .loop(@n - 1);
+        }
+        .loop(@leng);
+    }; .fwGen();
+    .fw-auto{font-weight: inherit;}
+    .fw700-auto-i{font-weight: inherit !important;}
+
+
+    .toolkitGen(@gp, @value-list){
+        @n:length(@value-list);
+
+        //距离
+        .write(@key,@value) when(@gp = 1){
+            .ml@{key}{margin-left:@value;}
+            .mt@{key}{margin-top:@value;}
+            .mr@{key}{margin-right:@value;}
+            .mb@{key}{margin-bottom:@value;}
+            .m@{key}{margin:@value;}
+            .pl@{key}{padding-left:@value;}
+            .pt@{key}{padding-top:@value;}
+            .pr@{key}{padding-right:@value;}
+            .pb@{key}{padding-bottom:@value;}
+            .p@{key}{padding:@value;}
+
+            .ml@{key}-i{margin-left:@value !important;}
+            .mt@{key}-i{margin-top:@value !important;}
+            .mr@{key}-i{margin-right:@value !important;}
+            .mb@{key}-i{margin-bottom:@value !important;}
+            .m@{key}-i{margin:@value !important;}
+            .pl@{key}-i{padding-left:@value !important;}
+            .pt@{key}-i{padding-top:@value !important;}
+            .pr@{key}-i{padding-right:@value !important;}
+            .pb@{key}-i{padding-bottom:@value !important;}
+            .p@{key}-i{padding:@value !important;}
+        }
+
+        //大小
+        .write(@key,@value) when(@gp = 2){
+            .fz@{key}{font-size:@value;}
+            .w@{key}{width:@value;}
+            .h@{key}{height:@value;}
+            .ti@{key}{text-indent:@value;}
+            .hgap@{key}{  height:@value;}
+            .vgap@{key}{  width:@value;  display: inline-block; }
+
+
+            .fz@{key}-i{font-size:@value !important;}
+            .w@{key}-i{width:@value !important;}
+            .h@{key}-i{height:@value !important;}
+            .ti@{key}-i{text-indent:@value !important;}
+            .hgap@{key}-i{  height:@value !important;}
+            .vgap@{key}-i{  width:@value !important;  display: inline-block; }
+        }
+
+        //透明
+        .write(@key,@value) when(@gp = 3){
+            .op@{key}{opacity:@value}
+            .op@{key}-i{opacity:@value  !important}
+        }
+
+
+        //缩放
+        .write(@key,@value) when(@gp = 4){
+            .scale@{key}{transform:scale(unit(@value))}
+        }
+
+
+        //百分比
+        .write(@key,@value) when(@gp = 100){
+            .w@{key}p{width:@value;}
+            .h@{key}p{height:@value;}
+            .l@{key}p{left:@value;}
+            .t@{key}p{top:@value;}
+            .r@{key}p{right:@value;}
+            .b@{key}p{bottom:@value;}
+            .pl@{key}p{padding-left:@value;}
+            .pt@{key}p{padding-top:@value;}
+            .pr@{key}p{padding-right:@value;}
+            .pb@{key}p{padding-bottom:@value;}
+        }
+
+        .loop(@n)when(@n>0){
+            @val:extract(@value-list,@n);
+
+            //小于1且非百分比数字
+            //乘以10,去掉小数点，前面加0
+            .tranKey(@number)when(@val <  1)  and not(ispercentage(@val)){
+                @valn:unit(@number * 10);
+                @valn2:replace(~"0@{valn}","\.","","g");
+                .write(@valn2,@val);
+            }
+            //大于1非百分比数字
+            //乘以10,小数点换为d
+            .tranKey(@number)when(@val >= 1) and not(ispercentage(@val)){
+                @valn:unit(@number * 10);
+                @valn2:replace(~"@{valn}","\.","d","g");
+                .write(@valn2,@val);
+            }
+
+            //百分比
+            .tranKey(@number)when(ispercentage(@val)){
+                @valn:unit(@number);
+                @valn2:replace(~"@{valn}","\.","d","g");
+                .write(@valn2,@val);
+            }
+
+            .tranKey(@val);
+            .loop(@n - 1);
+        }
+        .loop(@n)
+    }
+
+
+    //距离组   //.mt1.mb025
+    .toolkitGen(1,0em 0.125em 0.25em 0.5em 0.75em 1em 1.25em 1.5em 1.75em 2em 2.5em 3em 3.5em);
+
+    //大小 //.fz075 fz95 fz10d5 w08 w15 w17d5 .scale09
+    .toolkitGen(2, 0.25em 0.5em 0.75em 0.8em 0.85em 0.9em 0.95em 1em 1.05em 1.1em 1.15em 1.2em  1.25em 1.3em 1.35em 1.4em 1.5em 1.6em 1.7em 1.75em 1.8em 2em 2.1em 2.25em 2.4em 2.5em 2.7em 3em);
+
+    //透明 .op01.op05.op10
+    .toolkitGen(3,0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9 1);
+
+    //缩放 .scale01.scale10
+    .toolkitGen(4,0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.85 0.9 0.75 1 1.05 1.1 1.15 1.2 1.25 1.3 1.4 1.5 1.75 1.8 2 2.4 2.7 3 3.3 3.6 4.5);
+
+    //百分比 .w100p.h33d33p.l33d33p.t100p.pt16d66p
+    .toolkitGen(100,0% 10% 12.5% 14.285% 16.66% 20% 25% 33.33% 50% 66.66% 75% 100%);
+
+}
+
+
+
+//规定表格个列的宽度,自动宽度传入-1
+//ex:
+//.table-1{
+//     .tableColSet(18em 15px -1 -1 10%);
+//}
+//.table-1第一列宽度18em,第二列15px,第三列自动...
+.tableColSet(@widthList){
+    .output(@n,@value)when(@value>0){
+        &:nth-child(@{n}){
+            width:@value;
+        }
+    }
+    .loop(@n)when(@n>0){
+        td,th{  .output(@n,extract(@widthList,@n));  }
+        .loop(@n - 1);
+    }
+
+    @le:length(@widthList);
+    .loop(@le);
+}
+
+
+
+//.mdColorClass;
+//.shortcutClass;
+
+
+
