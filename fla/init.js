@@ -1,4 +1,28 @@
 var canvas, stage, exportRoot, anim_container, dom_overlay_container, fnStartAnimation;
+
+
+var compLs=[], comp;
+
+for(var k in AdobeAn.compositions){
+    compLs.push({
+        id:k,
+        comp:AdobeAn.compositions[k]
+    })
+}
+
+if(compLs[0]){
+    comp = compLs[0].comp;
+}
+
+if (!comp) {
+    throw "未找到组件"
+}
+
+var images = comp.getImages();
+var ss = comp.getSpriteSheet();
+var lib = comp.getLibrary();
+
+
 var $doc = $(document);
 var lastCanvasSizeWhenResize ;
 function init() {
