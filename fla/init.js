@@ -460,9 +460,9 @@ function enableTouchSlide(){
     var main = _.get(stage,"children.0");
     var pages = _.filter(this.children,function(el){return el.name!="startMc"});
 
-    $.get("./content.html",handler);
+    $.get("./content.html", getAjaxContentHandler);
 
-    function handler(textContent){
+    function getAjaxContentHandler(textContent){
         window.pages = pages;
 
         var $body = $("body");
@@ -516,7 +516,6 @@ function enableTouchSlide(){
         doc.on("tapmove",function(e){
             if(!pressed)    return;
 
-
             e.stopPropagation();
             e.preventDefault();
 
@@ -550,6 +549,7 @@ function enableTouchSlide(){
 
 
 
+    //声音控制相关代码
     $("body")
         .append("<div class='musicIcon spining'>" +
             "<img src='./images/musicIcon.svg'>" +
@@ -572,6 +572,8 @@ function enableTouchSlide(){
         .append("<div class='iconArrowUp'></div>")
     ;
 
+
+    //微信配置，使播放音频
     setTimeout(function(){
         $(".musicCtr")[0].play();
         wx.config({
@@ -588,7 +590,6 @@ function enableTouchSlide(){
 
         wx.ready(function() {
             $(".musicCtr")[0].play();
-
         });
     })
 }
