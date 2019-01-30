@@ -3,7 +3,7 @@
 var p; // shortcut to reference prototypes
 var lib={};var ss={};var img={};
 lib.ssMetadata = [
-		{name:"greatYear_atlas_P_", frames: [[913,359,108,123],[673,0,299,357],[416,0,255,478],[744,618,272,148],[0,0,414,736],[416,618,211,52],[416,480,480,136],[0,1290,364,98],[575,1415,90,95],[0,738,742,212],[460,1429,90,95],[861,1452,90,95],[962,768,60,215],[416,672,64,36],[861,1355,90,95],[773,1355,86,102],[380,952,378,167],[0,1390,90,95],[368,1429,90,95],[184,1390,90,95],[92,1390,90,95],[276,1429,90,95],[759,1483,90,95],[0,1487,90,95],[667,1483,90,95],[380,1121,378,167],[629,618,87,107],[366,1290,207,137],[685,1355,86,126],[0,1121,378,167],[575,1290,108,123],[898,484,108,123],[673,359,238,104],[760,970,200,200],[760,768,200,200],[0,952,378,167],[760,1172,177,181]]}
+		{name:"greatYear_atlas_P_", frames: [[913,359,108,123],[673,0,299,357],[416,0,255,478],[744,618,272,148],[0,0,414,736],[416,618,211,52],[416,480,480,136],[0,1290,364,98],[861,1355,90,95],[0,738,742,212],[0,1390,90,95],[276,1429,90,95],[962,768,60,215],[416,672,64,36],[368,1429,90,95],[773,1355,86,102],[0,1121,378,167],[667,1483,90,95],[460,1429,90,95],[184,1390,90,95],[575,1415,90,95],[0,1487,90,95],[92,1390,90,95],[861,1452,90,95],[759,1483,90,95],[380,952,378,167],[629,618,87,107],[366,1290,207,137],[685,1355,86,126],[0,952,378,167],[575,1290,108,123],[898,484,108,123],[673,359,238,104],[760,768,200,200],[760,970,200,200],[380,1121,378,167],[760,1172,177,181]]}
 ];
 
 
@@ -405,6 +405,19 @@ function getMCSymbolPrototype(symbol, nominalBounds, frameBounds) {
 
 (lib.s1元件1 = function(mode,startPosition,loop) {
 	this.initialize(mode,startPosition,loop,{});
+
+	// timeline functions:
+	this.frame_0 = function() {
+		this.opt = {
+			dura:5.52,
+			params:{
+				y:-100
+			}
+		}
+	}
+
+	// actions tween:
+	this.timeline.addTween(cjs.Tween.get(this).call(this.frame_0).wait(1));
 
 	// 图层 1
 	this.instance = new lib._2018();
@@ -1523,131 +1536,118 @@ p.nominalBounds = new cjs.Rectangle(-207,-368,414,710);
 	this.initialize(mode,startPosition,loop,{});
 
 	// timeline functions:
-	this.frame_109 = function() {
+	this.frame_0 = function() {
 		this.stop();
+		
+		setTimeout(
+			function(){
+					codeAnimate();
+			},
+			2000
+		)
 	}
 
 	// actions tween:
-	this.timeline.addTween(cjs.Tween.get(this).wait(109).call(this.frame_109).wait(1));
+	this.timeline.addTween(cjs.Tween.get(this).call(this.frame_0).wait(1));
 
 	// bainian.png
 	this.instance = new lib.元件16();
 	this.instance.parent = this;
-	this.instance.setTransform(0,404);
-	this.instance.alpha = 0;
-	this.instance._off = true;
+	this.instance.setTransform(0.6,258);
 
-	this.timeline.addTween(cjs.Tween.get(this.instance).wait(66).to({_off:false},0).wait(1).to({regX:-4.5,regY:-40,x:-4.4,y:337.7,alpha:0.036},0).wait(1).to({y:325.2,alpha:0.102},0).wait(1).to({x:-4.3,y:315.2,alpha:0.247},0).wait(1).to({y:306.6,alpha:0.697},0).wait(1).to({y:299.1,alpha:0.864},0).wait(1).to({x:-4.2,y:292.3,alpha:0.933},0).wait(1).to({y:286,alpha:0.969},0).wait(1).to({y:280.3,alpha:0.989},0).wait(1).to({y:275,alpha:0.998},0).wait(1).to({x:-4.1,y:270.1,alpha:1},0).wait(1).to({y:265.6},0).wait(1).to({y:261.3},0).wait(1).to({y:257.4},0).wait(1).to({y:253.7},0).wait(1).to({y:250.2},0).wait(1).to({y:247},0).wait(1).to({x:-4,y:244},0).wait(1).to({y:241.2},0).wait(1).to({y:238.6},0).wait(1).to({y:236.2},0).wait(1).to({y:233.9},0).wait(1).to({y:231.9},0).wait(1).to({y:230},0).wait(1).to({y:228.2},0).wait(1).to({y:226.6},0).wait(1).to({y:225.2},0).wait(1).to({y:223.9},0).wait(1).to({y:222.7},0).wait(1).to({y:221.7},0).wait(1).to({y:220.8},0).wait(1).to({y:220.1},0).wait(1).to({y:219.4},0).wait(1).to({y:218.9},0).wait(1).to({y:218.5},0).wait(1).to({y:218.2},0).wait(1).to({y:218.1},0).wait(1).to({regX:0,regY:0,x:0.6,y:258},0).wait(7));
+	this.timeline.addTween(cjs.Tween.get(this.instance).wait(1));
 
 	// logo
 	this.instance_1 = new lib.元件15();
 	this.instance_1.parent = this;
-	this.instance_1.setTransform(0,337.8);
-	this.instance_1.alpha = 0;
-	this.instance_1._off = true;
+	this.instance_1.setTransform(3.7,185.9);
 
-	this.timeline.addTween(cjs.Tween.get(this.instance_1).wait(61).to({_off:false},0).wait(1).to({regX:-5.6,regY:-40.4,x:-4.9,y:269.6,alpha:0.038},0).wait(1).to({x:-4.6,y:256.4,alpha:0.107},0).wait(1).to({x:-4.3,y:245.8,alpha:0.269},0).wait(1).to({x:-4.1,y:236.8,alpha:0.728},0).wait(1).to({x:-3.9,y:228.8,alpha:0.877},0).wait(1).to({x:-3.8,y:221.6,alpha:0.941},0).wait(1).to({x:-3.6,y:215.1,alpha:0.974},0).wait(1).to({x:-3.4,y:209.1,alpha:0.992},0).wait(1).to({x:-3.3,y:203.5,alpha:0.999},0).wait(1).to({x:-3.2,y:198.4,alpha:1},0).wait(1).to({x:-3.1,y:193.6},0).wait(1).to({x:-3,y:189.2},0).wait(1).to({x:-2.9,y:185},0).wait(1).to({x:-2.8,y:181.2},0).wait(1).to({x:-2.7,y:177.6},0).wait(1).to({x:-2.6,y:174.2},0).wait(1).to({x:-2.5,y:171.1},0).wait(1).to({y:168.2},0).wait(1).to({x:-2.4,y:165.5},0).wait(1).to({x:-2.3,y:163.1},0).wait(1).to({y:160.8},0).wait(1).to({x:-2.2,y:158.7},0).wait(1).to({y:156.7},0).wait(1).to({x:-2.1,y:155},0).wait(1).to({y:153.4},0).wait(1).to({y:151.9},0).wait(1).to({x:-2,y:150.7},0).wait(1).to({y:149.5},0).wait(1).to({y:148.6},0).wait(1).to({y:147.7},0).wait(1).to({x:-1.9,y:147},0).wait(1).to({y:146.4},0).wait(1).to({y:146},0).wait(1).to({y:145.7},0).wait(1).to({y:145.5},0).wait(1).to({regX:0,regY:0,x:3.7,y:185.9},0).wait(13));
+	this.timeline.addTween(cjs.Tween.get(this.instance_1).wait(1));
 
 	// happy new year 2018
 	this.instance_2 = new lib.元件1ewewwewe();
 	this.instance_2.parent = this;
-	this.instance_2.setTransform(-252.2,-293);
-	this.instance_2._off = true;
+	this.instance_2.setTransform(-173.2,-293);
 
-	this.timeline.addTween(cjs.Tween.get(this.instance_2).wait(58).to({_off:false},0).to({x:-173.2},32,cjs.Ease.get(1)).wait(20));
+	this.timeline.addTween(cjs.Tween.get(this.instance_2).wait(1));
 
 	// year is the dog
 	this.instance_3 = new lib.底色翁();
 	this.instance_3.parent = this;
-	this.instance_3.setTransform(265.8,288.5,1.437,1.437);
-	this.instance_3._off = true;
+	this.instance_3.setTransform(164.8,288.5,1.437,1.437);
 
-	this.timeline.addTween(cjs.Tween.get(this.instance_3).wait(55).to({_off:false},0).to({x:164.8},31).wait(24));
+	this.timeline.addTween(cjs.Tween.get(this.instance_3).wait(1));
 
 	// 右边的树
 	this.instance_4 = new lib.元件sdfsfww();
 	this.instance_4.parent = this;
-	this.instance_4.setTransform(256.5,-291.5);
-	this.instance_4._off = true;
+	this.instance_4.setTransform(169.5,-291.5);
 
-	this.timeline.addTween(cjs.Tween.get(this.instance_4).wait(47).to({_off:false},0).to({x:169.5},35,cjs.Ease.get(1)).wait(28));
+	this.timeline.addTween(cjs.Tween.get(this.instance_4).wait(1));
 
 	// 左边的树
 	this.instance_5 = new lib.元件1sdfsfsdfsf();
 	this.instance_5.parent = this;
-	this.instance_5.setTransform(-288.4,290.9);
-	this.instance_5._off = true;
+	this.instance_5.setTransform(-166.4,290.9);
 
-	this.timeline.addTween(cjs.Tween.get(this.instance_5).wait(43).to({_off:false},0).to({x:-166.4},28,cjs.Ease.get(1)).wait(39));
+	this.timeline.addTween(cjs.Tween.get(this.instance_5).wait(1));
 
 	// 金色花2
 	this.instance_6 = new lib.阿什顿发撒旦法();
 	this.instance_6.parent = this;
-	this.instance_6.setTransform(53.8,112.9,1,1,15);
-	this.instance_6.alpha = 0;
-	this.instance_6._off = true;
+	this.instance_6.setTransform(177.2,198.6,1,1,135);
 
-	this.timeline.addTween(cjs.Tween.get(this.instance_6).wait(41).to({_off:false},0).to({rotation:495,x:177.2,y:198.6,alpha:1},48,cjs.Ease.get(1)).wait(21));
+	this.timeline.addTween(cjs.Tween.get(this.instance_6).wait(1));
 
 	// 金色花
 	this.instance_7 = new lib.阿什顿发撒旦法();
 	this.instance_7.parent = this;
-	this.instance_7.setTransform(-77.8,202.7,1,1,-60);
-	this.instance_7.alpha = 0;
-	this.instance_7._off = true;
+	this.instance_7.setTransform(-179.6,178.5);
 
-	this.timeline.addTween(cjs.Tween.get(this.instance_7).wait(37).to({_off:false},0).to({rotation:360,x:-179.6,y:178.5,alpha:1},40,cjs.Ease.get(1)).wait(33));
+	this.timeline.addTween(cjs.Tween.get(this.instance_7).wait(1));
 
 	// yun
 	this.instance_8 = new lib.元件22();
 	this.instance_8.parent = this;
-	this.instance_8.setTransform(-301.1,-296.7,2.041,2.041,0,0,0,-0.1,-0.1);
-	this.instance_8._off = true;
+	this.instance_8.setTransform(-43.9,-281.5,1.34,1.34);
 
-	this.timeline.addTween(cjs.Tween.get(this.instance_8).wait(34).to({_off:false},0).wait(1).to({regX:-10.1,regY:-19.6,scaleX:1.99,scaleY:1.99,x:-302.4,y:-334.4},0).wait(1).to({scaleX:1.94,scaleY:1.94,x:-282.8,y:-332.2},0).wait(1).to({scaleX:1.89,scaleY:1.89,x:-263.4,y:-330.1},0).wait(1).to({scaleX:1.84,scaleY:1.84,x:-245.2,y:-328.1},0).wait(1).to({scaleX:1.79,scaleY:1.79,x:-228.3,y:-326.3},0).wait(1).to({scaleX:1.75,scaleY:1.75,x:-213,y:-324.6},0).wait(1).to({scaleX:1.72,scaleY:1.72,x:-199.2,y:-323.1},0).wait(1).to({scaleX:1.68,scaleY:1.68,x:-186.7,y:-321.7},0).wait(1).to({scaleX:1.65,scaleY:1.65,x:-175.4,y:-320.5},0).wait(1).to({scaleX:1.63,scaleY:1.63,x:-165.2,y:-319.4},0).wait(1).to({scaleX:1.6,scaleY:1.6,x:-155.9,y:-318.4},0).wait(1).to({scaleX:1.58,scaleY:1.58,x:-147.5,y:-317.4},0).wait(1).to({scaleX:1.56,scaleY:1.56,x:-139.8,y:-316.6},0).wait(1).to({scaleX:1.54,scaleY:1.54,x:-132.7,y:-315.8},0).wait(1).to({scaleX:1.52,scaleY:1.52,x:-126.3,y:-315.1},0).wait(1).to({scaleX:1.51,scaleY:1.51,x:-120.4,y:-314.5},0).wait(1).to({scaleX:1.49,scaleY:1.49,x:-114.9,y:-313.9},0).wait(1).to({scaleX:1.48,scaleY:1.48,x:-109.8,y:-313.3},0).wait(1).to({scaleX:1.47,scaleY:1.47,x:-105.1,y:-312.8},0).wait(1).to({scaleX:1.46,scaleY:1.46,x:-100.8,y:-312.4},0).wait(1).to({scaleX:1.45,scaleY:1.45,x:-96.8,y:-311.9},0).wait(1).to({scaleX:1.44,scaleY:1.44,x:-93.1,y:-311.5},0).wait(1).to({scaleX:1.43,scaleY:1.43,x:-89.7,y:-311.1},0).wait(1).to({scaleX:1.42,scaleY:1.42,x:-86.5,y:-310.8},0).wait(1).to({scaleX:1.41,scaleY:1.41,x:-83.6,y:-310.5},0).wait(1).to({scaleX:1.4,scaleY:1.4,x:-80.9,y:-310.2},0).wait(1).to({scaleX:1.4,scaleY:1.4,x:-78.4,y:-309.9},0).wait(1).to({scaleX:1.39,scaleY:1.39,x:-76.1,y:-309.6},0).wait(1).to({scaleX:1.38,scaleY:1.38,x:-73.9,y:-309.4},0).wait(1).to({scaleX:1.38,scaleY:1.38,x:-72,y:-309.2},0).wait(1).to({scaleX:1.37,scaleY:1.37,x:-70.1,y:-309},0).wait(1).to({scaleX:1.37,scaleY:1.37,x:-68.5,y:-308.8},0).wait(1).to({scaleX:1.37,scaleY:1.37,x:-67,y:-308.6},0).wait(1).to({scaleX:1.36,scaleY:1.36,x:-65.6,y:-308.5},0).wait(1).to({scaleX:1.36,scaleY:1.36,x:-64.3,y:-308.4},0).wait(1).to({scaleX:1.36,scaleY:1.36,x:-63.2,y:-308.3},0).wait(1).to({scaleX:1.35,scaleY:1.35,x:-62.1,y:-308.1},0).wait(1).to({scaleX:1.35,scaleY:1.35,x:-61.2,y:-308},0).wait(1).to({scaleX:1.35,scaleY:1.35,x:-60.4,y:-307.9},0).wait(1).to({scaleX:1.35,scaleY:1.35,x:-59.7},0).wait(1).to({scaleX:1.35,scaleY:1.35,x:-59.1,y:-307.8},0).wait(1).to({scaleX:1.34,scaleY:1.34,x:-58.6,y:-307.7},0).wait(1).to({scaleX:1.34,scaleY:1.34,x:-58.2},0).wait(1).to({scaleX:1.34,scaleY:1.34,x:-57.8,y:-307.6},0).wait(1).to({scaleX:1.34,scaleY:1.34,x:-57.6},0).wait(1).to({x:-57.4},0).wait(1).to({scaleX:1.34,scaleY:1.34,x:-57.3},0).wait(1).to({regX:0,regY:0,x:-43.9,y:-281.5},0).wait(28));
+	this.timeline.addTween(cjs.Tween.get(this.instance_8).wait(1));
 
 	// 云1
 	this.instance_9 = new lib.s1元件sdfsfd();
 	this.instance_9.parent = this;
-	this.instance_9.setTransform(-335.6,-72.5,1.326,1.326);
-	this.instance_9._off = true;
+	this.instance_9.setTransform(132.2,-72.5,1.326,1.326);
 
-	this.timeline.addTween(cjs.Tween.get(this.instance_9).wait(33).to({_off:false},0).wait(1).to({regY:-22.3,x:-239.7,y:-102},0).wait(1).to({x:-166.7},0).wait(1).to({x:-116.8},0).wait(1).to({x:-80.3},0).wait(1).to({x:-52},0).wait(1).to({x:-29.1},0).wait(1).to({x:-9.9},0).wait(1).to({x:6.3},0).wait(1).to({x:20.4,y:-101.9},0).wait(1).to({x:32.8},0).wait(1).to({x:43.7},0).wait(1).to({x:53.3},0).wait(1).to({x:62},0).wait(1).to({x:69.8},0).wait(1).to({x:76.7},0).wait(1).to({x:83.1},0).wait(1).to({x:88.8},0).wait(1).to({x:93.9},0).wait(1).to({x:98.6},0).wait(1).to({x:102.8},0).wait(1).to({x:106.7},0).wait(1).to({x:110.1},0).wait(1).to({x:113.3},0).wait(1).to({x:116.1},0).wait(1).to({x:118.6},0).wait(1).to({x:120.9},0).wait(1).to({x:122.9},0).wait(1).to({x:124.7},0).wait(1).to({x:126.2},0).wait(1).to({x:127.6},0).wait(1).to({x:128.7},0).wait(1).to({x:129.7},0).wait(1).to({x:130.5},0).wait(1).to({x:131.1},0).wait(1).to({x:131.6},0).wait(1).to({x:132},0).wait(1).to({x:132.2},0).wait(1).to({regY:0,y:-72.5},0).wait(39));
+	this.timeline.addTween(cjs.Tween.get(this.instance_9).wait(1));
 
 	// 云2
 	this.instance_10 = new lib.s1元件2();
 	this.instance_10.parent = this;
-	this.instance_10.setTransform(-335,-86,1.348,1.348);
-	this.instance_10._off = true;
+	this.instance_10.setTransform(-153.7,-86);
 
-	this.timeline.addTween(cjs.Tween.get(this.instance_10).wait(29).to({_off:false},0).wait(1).to({regX:6,regY:-22,scaleX:1.25,scaleY:1.25,x:-274.1,y:-113.4},0).wait(1).to({scaleX:1.21,scaleY:1.21,x:-254.9,y:-112.6},0).wait(1).to({scaleX:1.18,scaleY:1.18,x:-241.3,y:-112},0).wait(1).to({scaleX:1.16,scaleY:1.16,x:-230.5,y:-111.5},0).wait(1).to({scaleX:1.14,scaleY:1.14,x:-221.6,y:-111.1},0).wait(1).to({scaleX:1.13,scaleY:1.13,x:-213.9,y:-110.8},0).wait(1).to({scaleX:1.12,scaleY:1.12,x:-207.2,y:-110.5},0).wait(1).to({scaleX:1.1,scaleY:1.1,x:-201.3,y:-110.3},0).wait(1).to({scaleX:1.09,scaleY:1.09,x:-196.1,y:-110},0).wait(1).to({scaleX:1.09,scaleY:1.09,x:-191.4,y:-109.8},0).wait(1).to({scaleX:1.08,scaleY:1.08,x:-187.1,y:-109.7},0).wait(1).to({scaleX:1.07,scaleY:1.07,x:-183.2,y:-109.5},0).wait(1).to({scaleX:1.06,scaleY:1.06,x:-179.7,y:-109.3},0).wait(1).to({scaleX:1.06,scaleY:1.06,x:-176.5,y:-109.2},0).wait(1).to({scaleX:1.05,scaleY:1.05,x:-173.5,y:-109.1},0).wait(1).to({scaleX:1.05,scaleY:1.05,x:-170.8,y:-109},0).wait(1).to({scaleX:1.04,scaleY:1.04,x:-168.3,y:-108.9},0).wait(1).to({scaleX:1.04,scaleY:1.04,x:-166.1,y:-108.8},0).wait(1).to({scaleX:1.03,scaleY:1.03,x:-164,y:-108.7},0).wait(1).to({scaleX:1.03,scaleY:1.03,x:-162.1,y:-108.6},0).wait(1).to({scaleX:1.02,scaleY:1.02,x:-160.3,y:-108.5},0).wait(1).to({scaleX:1.02,scaleY:1.02,x:-158.7},0).wait(1).to({scaleX:1.02,scaleY:1.02,x:-157.3,y:-108.4},0).wait(1).to({scaleX:1.02,scaleY:1.02,x:-156,y:-108.3},0).wait(1).to({scaleX:1.01,scaleY:1.01,x:-154.7},0).wait(1).to({scaleX:1.01,scaleY:1.01,x:-153.7,y:-108.2},0).wait(1).to({scaleX:1.01,scaleY:1.01,x:-152.7},0).wait(1).to({scaleX:1.01,scaleY:1.01,x:-151.8},0).wait(1).to({scaleX:1.01,scaleY:1.01,x:-151,y:-108.1},0).wait(1).to({scaleX:1,scaleY:1,x:-150.3},0).wait(1).to({scaleX:1,scaleY:1,x:-149.7},0).wait(1).to({scaleX:1,scaleY:1,x:-149.2,y:-108},0).wait(1).to({scaleX:1,scaleY:1,x:-148.8},0).wait(1).to({x:-148.4},0).wait(1).to({scaleX:1,scaleY:1,x:-148.1},0).wait(1).to({x:-147.9},0).wait(1).to({scaleX:1,scaleY:1,x:-147.7},0).wait(1).to({x:-147.6},0).wait(1).to({regX:0,regY:0,x:-153.7,y:-86},0).wait(42));
+	this.timeline.addTween(cjs.Tween.get(this.instance_10).wait(1));
 
 	// 2018
 	this.instance_11 = new lib.s1元件1();
 	this.instance_11.parent = this;
-	this.instance_11.setTransform(27.8,-158.8,2.097,2.097,0,0,0,0.1,-0.1);
-	this.instance_11.alpha = 0;
-	this.instance_11._off = true;
+	this.instance_11.setTransform(21.4,-164.9,1.219,1.219,0,0,0,0,-0.1);
 
-	this.timeline.addTween(cjs.Tween.get(this.instance_11).wait(24).to({_off:false},0).to({regX:0,scaleX:1.22,scaleY:1.22,x:21.4,y:-164.9,alpha:1},44,cjs.Ease.get(1)).wait(42));
+	this.timeline.addTween(cjs.Tween.get(this.instance_11).wait(1));
 
 	// 锦旗
 	this.instance_12 = new lib.元件1_1();
 	this.instance_12.parent = this;
-	this.instance_12.setTransform(0,-339.6);
-	this.instance_12.alpha = 0;
-	this.instance_12._off = true;
+	this.instance_12.setTransform(0,-131.7);
 
-	this.timeline.addTween(cjs.Tween.get(this.instance_12).wait(20).to({_off:false},0).wait(1).to({regX:-2.5,regY:29.4,x:-2.5,y:-284.4,alpha:0.124},0).wait(1).to({y:-271.7,alpha:0.185},0).wait(1).to({y:-261.3,alpha:0.235},0).wait(1).to({y:-252.1,alpha:0.28},0).wait(1).to({y:-243.7,alpha:0.32},0).wait(1).to({y:-235.9,alpha:0.357},0).wait(1).to({y:-228.6,alpha:0.393},0).wait(1).to({y:-221.6,alpha:0.426},0).wait(1).to({y:-215.1,alpha:0.458},0).wait(1).to({y:-208.8,alpha:0.488},0).wait(1).to({y:-202.7,alpha:0.517},0).wait(1).to({y:-197,alpha:0.545},0).wait(1).to({y:-191.4,alpha:0.571},0).wait(1).to({y:-186.1,alpha:0.597},0).wait(1).to({y:-180.9,alpha:0.622},0).wait(1).to({y:-176,alpha:0.646},0).wait(1).to({y:-171.2,alpha:0.669},0).wait(1).to({y:-166.6,alpha:0.691},0).wait(1).to({y:-162.1,alpha:0.712},0).wait(1).to({y:-157.8,alpha:0.733},0).wait(1).to({y:-153.7,alpha:0.752},0).wait(1).to({y:-149.8,alpha:0.772},0).wait(1).to({y:-146,alpha:0.79},0).wait(1).to({y:-142.3,alpha:0.807},0).wait(1).to({y:-138.8,alpha:0.824},0).wait(1).to({y:-135.4,alpha:0.84},0).wait(1).to({y:-132.2,alpha:0.856},0).wait(1).to({y:-129.2,alpha:0.871},0).wait(1).to({y:-126.3,alpha:0.884},0).wait(1).to({y:-123.5,alpha:0.898},0).wait(1).to({y:-120.9,alpha:0.91},0).wait(1).to({y:-118.5,alpha:0.922},0).wait(1).to({y:-116.2,alpha:0.933},0).wait(1).to({y:-114.1,alpha:0.943},0).wait(1).to({y:-112.1,alpha:0.953},0).wait(1).to({y:-110.3,alpha:0.961},0).wait(1).to({y:-108.7,alpha:0.969},0).wait(1).to({y:-107.2,alpha:0.976},0).wait(1).to({y:-105.9,alpha:0.982},0).wait(1).to({y:-104.8,alpha:0.988},0).wait(1).to({y:-103.9,alpha:0.992},0).wait(1).to({y:-103.2,alpha:0.995},0).wait(1).to({y:-102.7,alpha:0.998},0).wait(1).to({y:-102.4,alpha:0.999},0).wait(1).to({regX:0,regY:0,x:0,y:-131.7,alpha:1},0).wait(45));
+	this.timeline.addTween(cjs.Tween.get(this.instance_12).wait(1));
 
 	// 背景
 	this.instance_13 = new lib.主背景_1();
 	this.instance_13.parent = this;
 
-	this.timeline.addTween(cjs.Tween.get(this.instance_13).wait(110));
+	this.timeline.addTween(cjs.Tween.get(this.instance_13).wait(1));
 
-}).prototype = p = new cjs.MovieClip();
-p.nominalBounds = new cjs.Rectangle(-207,-368,414,710);
+}).prototype = getMCSymbolPrototype(lib.场景1, new cjs.Rectangle(-232.6,-368,489.7,714.1), null);
 
 
 // stage content:
@@ -1728,7 +1728,7 @@ p.nominalBounds = new cjs.Rectangle(-207,-368,414,710);
 	this.timeline.addTween(cjs.Tween.get(this.sc1).wait(1));
 
 }).prototype = p = new cjs.MovieClip();
-p.nominalBounds = new cjs.Rectangle(-1400.6,55.7,1554.7,1737.9);
+p.nominalBounds = new cjs.Rectangle(-1426.2,55.7,1580.3,1737.9);
 // library properties:
 lib.properties = {
 	id: '1CC7DBE24B030841BB8D6B97021A3168',
@@ -1738,7 +1738,7 @@ lib.properties = {
 	color: "#FFFFFF",
 	opacity: 1.00,
 	manifest: [
-		{src:"images/greatYear_atlas_P_.png?1548811434165", id:"greatYear_atlas_P_"}
+		{src:"images/greatYear_atlas_P_.png?1548844573661", id:"greatYear_atlas_P_"}
 	],
 	preloads: []
 };

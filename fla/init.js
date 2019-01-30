@@ -249,21 +249,53 @@ var Class_Pagemgr = (function(config){
             m.index(m.sett.index);
         },
 
+
+        /**
+         * 为每个fl页初始化盖印
+         * @private
+         */
         _initCanvasShadow:function(){
             var m = this;
             var cs = m.sett.canvasShadow;
             var $scroll = $("<div class='scroll'></div>").appendTo(cs);
             m.$scroll = $scroll;
-
-
             m.each(function(page,i){
-                $scroll.append($("<div></div>",{index:i,class:"pageShadow ps"+i}))
+                $scroll.append($("<div></div>",{index:i,class:"pageShadow ps"+i}));
+                var childrenLs = page.children.filter(function(el){
+                    return el.opt;
+                })
+
+                if (childrenLs) {
+                    page.inTimeLine = new TimelineLite();
+                    childrenLs.forEach(function(el){
+                        var para = el.opt.params;
+                        if (!para) {
+                            return;
+                        }
+
+
+                        window.eee = el;
+                        window.ppp = page.inTimeLine;
+                        var method = el.opt.method || "from";
+                        var dura =  el.opt.dura || 1;
+                        var timeOffset = el.opt.timeOffset;
+
+                        if(timeOffset===undefined) {
+                            page.inTimeLine.add(TweenMax[method](el,dura,para))
+                        }else {
+                            page.inTimeLine.add(TweenMax[method](el, dura, para), timeOffset)
+                        }
+                    })
+                    page.inTimeLine.stop();
+                }
             })
 
             m.pageShadowList = [];
             var tx = $(m.sett.textContent).find(">*")
             $(".pageShadow",$scroll).each(function(i,el){
                 var $el = $(el);
+
+                var page = m.list[i];
 
                 tx.eq(i).appendTo($el);
                 m.pageShadowList.push($el);
@@ -273,6 +305,10 @@ var Class_Pagemgr = (function(config){
                 })
 
                 var tl = $el.timeline = new TimelineLite();
+                if (page.inTimeLine) {
+                    tl.add(page.inTimeLine)
+                }
+
                 res.forEach(function(el,i){
                     var method = el.getAttribute("gs-method") || "from";
                     var para = el.getAttribute("gs-para");
@@ -285,7 +321,7 @@ var Class_Pagemgr = (function(config){
                     }else{
                         tl.add(TweenMax[method](el,dura,para),timeOffset)
                     }
-                })
+                });
                 tl.stop();
             });
 
@@ -458,6 +494,8 @@ function enableTouchSlide(){
     ;
 
     var main = _.get(stage,"children.0");
+
+    //舞台上的第一层组件的个数
     var pages = _.filter(this.children,function(el){return el.name!="startMc"});
 
     $.get("./content.html", getAjaxContentHandler);
