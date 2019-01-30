@@ -94,16 +94,12 @@ function handleComplete(evt) {
         resizeCanvas();
         function resizeCanvas() {
             //舞台尺寸
-            var
-                w = lib.properties.width,
-                h = lib.properties.height
-            ;
+            var w = lib.properties.width;
+            var h = lib.properties.height;
 
             //浏览器尺寸
-            var
-                iw = window.innerWidth,
-                ih=window.innerHeight
-            ;
+            var iw = window.innerWidth;
+            var ih =window.innerHeight;
 
             //比率
             var
@@ -121,15 +117,12 @@ function handleComplete(evt) {
             if(isResp) {
                 if((respDim=='width' && lastW==iw ) || (respDim=='height'&&lastH==ih)) {
                     sRatio = lastS;
-                }
-                else if(!isScale) {
+                } else if(!isScale) {
                     if(iw<w || ih<h)
                         sRatio = Math.min(xRatio, yRatio);
-                }
-                else if(scaleType==1) {
+                } else if(scaleType==1) {
                     sRatio = Math.min(xRatio, yRatio);
-                }
-                else if(scaleType==2) {
+                } else if(scaleType==2) {
                     sRatio = Math.max(xRatio, yRatio);
                 }
             }
@@ -245,10 +238,7 @@ var Class_Pagemgr = (function(config){
                             top:$el.attr("offset-top") * size.stageScale
                         })
                     })
-
                     var yingzhang = pageshadow.find(".toParent").appendTo(pageshadow);
-
-
                     var scale = size.stageScale;
                     yingzhang.css({
                         right:5.0 * scale + "em",
@@ -278,7 +268,6 @@ var Class_Pagemgr = (function(config){
                 tx.eq(i).appendTo($el);
                 m.pageShadowList.push($el);
 
-
                 var res = _.sortBy($el.find("[gs-para]").toArray(),function(el){
                     return el.getAttribute("gs-sort-index")*1;
                 })
@@ -300,11 +289,7 @@ var Class_Pagemgr = (function(config){
                 tl.stop();
             });
 
-
-
-
             m.sett.initPageHandler.call(m,m.pageShadowList,m.sett.textContent);
-
             $doc.on("resize",function(e,size){
                 m.eachShadow(function(el,i){
                     el.css({
