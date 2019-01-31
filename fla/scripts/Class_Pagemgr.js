@@ -158,7 +158,7 @@ var Class_Pagemgr = (function(config){
                             para.ease = EaseOptions.default;
                         }
                         var dura = el.getAttribute("gs-dura") || 1;
-                        var timeOffset = el.getAttribute("gs-time-offset");
+                        var timeOffset = el.getAttribute("gs-time-offset") || "+=0";
 
 
                         if (para.addClass || para.rmClass) {
@@ -178,21 +178,17 @@ var Class_Pagemgr = (function(config){
                                 }
                             },timeOffset)
                         }else{
-                            if(timeOffset===undefined) {
-                                tl.add(TweenMax[method](el,dura,para));
-                                // tl.add(TweenMax.fromTo(el,dura,para, {y:0}))
+                            var tar;
+                            if (para.tweenChilds) {
+                                tar = $(">*, .tween-child", el).toArray();
                             }else{
-                                tl.add(TweenMax[method](el,dura,para),timeOffset);
+                                tar = [el];
                             }
+                            tar.forEach(function(el){
+                                tl.add(TweenMax[method](el,dura,para),timeOffset);
+                            })
                         }
-
-
-
-
-
                     }
-
-
                 });
                 tl.stop();
             });

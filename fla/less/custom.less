@@ -2,6 +2,39 @@
 @import "t2.less";
 @import "font";
 
+
+.__icon{
+    background-repeat: no-repeat;
+    background-position: 50% 50%;
+    background-size: cover;
+}
+
+.__center{
+    margin-left: auto;
+    margin-right: auto;
+}
+
+
+
+@baseFontSize: 75;//基于视觉稿横屏尺寸/100得出的基准font-size
+.px2rem(@name, @px){
+    @{name}: @px / @baseFontSize * 1rem;
+}
+
+._size-rem(@width){
+    .px2rem(width, @width);
+    .px2rem(height, @width);
+}
+
+._size-rem(@width, @height){
+    .px2rem(width, @width);
+    .px2rem(height, @height);
+}
+
+._height(@h){
+    .px2rem(height, @h);
+}
+
 b{
     font-weight: inherit;
 }
@@ -87,3 +120,62 @@ b{
         }
     }
 }
+
+
+.logo {
+    &:extend(.__icon);
+    background-image: url(../assets/logo260x40.png) !important;
+    ._size-rem(260, 40);
+
+    &.ontop{
+        .px2rem(margin-top, 50);
+        .px2rem(margin-left, 50);
+    }
+}
+
+
+.page-title{
+    &:extend(.__icon);
+    background-image: url(../assets/page-title603x156.png) !important;
+    ._size-rem(603, 156);
+    &:extend(.__center);;
+
+
+}
+
+.pageShadow{
+    &:extend(.__icon);
+    background-image: url(../assets/main-bg.gif) !important;
+    color: @color-gold;
+}
+
+.block-title{
+    &:extend(.__icon);
+    &.t1{
+        background-image: url(../assets/block-title-1.png) !important;
+    }
+    ._size-rem(665, 58);
+    &:extend(.__center);
+}
+
+
+.item-title{
+    &:before, &:after{
+        content:"";
+        display: inline-block;
+        ._size-rem(82, 12);
+        &:extend(.__icon);
+        background-image: url(../assets/@line.png) !important;
+        margin:0 0.25em;
+    }
+    &:before{}
+    &:after{
+        transform: rotateY(180deg);
+    }
+
+    font-weight: 500;
+}
+
+.mt54x{.px2rem(margin-top, 54);}
+.mt27x{.px2rem(margin-top, 27);}
+
