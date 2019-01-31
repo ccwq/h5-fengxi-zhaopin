@@ -1,15 +1,17 @@
 {
-  "name": "newYearHappy",
-  "version": "1.0.0",
-  "description": "",
-  "main": "ab.js",
-  "directories": {
-    "test": "test"
-  },
-  "scripts": {
-    "nav": "live-server ./fla --port=6366 --host=0.0.0.0 --open=/ --ignorePattern=.*\\.less"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC"
+    "name": "newYearHappy",
+    "version": "1.0.0",
+    "description": "",
+    "main": "ab.js",
+    "directories": {
+        "test": "test"
+    },
+    "scripts": {
+        "less": "npx less2er --path=fla/less",
+        "nav": "live-server ./fla --port=6366 --host=0.0.0.0 --open=/ --ignorePattern=.*\\.less"
+    },
+    "keywords": [],
+    "author": "ccwq <scwqd@qq.com>",
+    "license": "ISC",
+    "repository": "git@github.com:ccwq/newYearHappy.git"
 }
