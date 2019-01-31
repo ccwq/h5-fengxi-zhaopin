@@ -8,7 +8,7 @@
     },
     "scripts": {
         "less": "npx less2er --path=fla/less",
-        "nav": "live-server ./fla --port=6366 --host=0.0.0.0 --open=/ --ignorePattern=.*\\.less"
+        "nav": "npx live-server ./fla --port=6366 --host=0.0.0.0 --open=/ --ignorePattern=.*\\.less"
     },
     "keywords": [],
     "author": "ccwq <scwqd@qq.com>",
