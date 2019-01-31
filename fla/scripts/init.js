@@ -354,3 +354,19 @@ function codeAnimate(){
         pmg.codeAnimate();
     })
 }
+
+
+function drawChartIframe(iframe, current, url){
+    iframe = iframe[0] || iframe;
+    if(iframe.contentWindow){
+        iframe.contentWindow.draw();
+    }
+}
+
+
+function clearChartIframe(iframe){
+    iframe = iframe[0] || iframe;
+    if(iframe.contentWindow){
+        iframe.contentWindow.clear();
+    }
+}

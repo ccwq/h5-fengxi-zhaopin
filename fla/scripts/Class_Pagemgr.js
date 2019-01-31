@@ -162,11 +162,11 @@ var Class_Pagemgr = (function(config){
 
 
                         if (para.addClass || para.rmClass) {
-                            tl.add(function(){
+                            tl.add(function () {
                                 var target;
                                 if (!para.target) {
                                     target = $el;
-                                }else{
+                                } else {
                                     target = $(para.target, _$el)
                                 }
                                 if (para.addClass) {
@@ -176,7 +176,24 @@ var Class_Pagemgr = (function(config){
                                 if (para.rmClass) {
                                     target.removeClass(para.rmClass);
                                 }
-                            },timeOffset)
+                            }, timeOffset)
+                        }else if(para.call){
+
+                            var target;
+                            if (!para.target) {
+                                target = $el;
+                            } else {
+                                target = $(para.target, _$el)
+                            }
+                            var args = para.arguments || [];
+
+                            args.unshift($el);
+                            args.unshift(target);
+
+                            tl.add(function(){
+                                window[para.call].apply(null, args);
+                            },timeOffset);
+
                         }else{
                             var tar;
                             if (para.tweenChilds) {
