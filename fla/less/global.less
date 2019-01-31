@@ -2,7 +2,6 @@
 @import "t2.less";
 @import "font";
 
-
 .reset;
 
 
@@ -12,6 +11,8 @@ body,
     overflow: hidden;
     background-color: #D40000;
     background-image: url(../images/bg.png);
+
+    font-family: webfont;
 }
 
 #animation_container {
@@ -152,16 +153,16 @@ body,
     position: relative;
     top: 200px;
 
-    .logo {
-        margin-left: auto;
-        margin-right: auto;
+
+    &.full-height{
+        height: 100vh;
+        top: 0;
+        width: 85vw;
     }
 
-    color: #333;
     font-size: 16px;
     text-align: center;
-    width: 70%;
-    max-width: 280px;
+    width: 85%;
     //background-color: rgba(255, 255, 255, 0.6);
     line-height: 1.85em;
 
@@ -304,4 +305,45 @@ body,
     *[is-page-eof="true"] &{
         margin-bottom: -50vh;
     }
+}
+
+
+
+.gs-text-effect{
+    b{
+        font-weight: inherit;
+        display: inline-block;
+    }
+}
+
+.imgGridCont{
+    display: inline-block;
+    line-height: 0;
+    font-size: 0;
+    text-align: left;
+    span{
+        position: relative;
+        overflow: hidden;
+        width: 50%;
+        display: inline-block;
+        height: 80px;
+        box-sizing: border-box;
+        padding: 0.25em;
+        font-size: 14px;
+    }
+    img{
+        top: 0;
+        left: 0;
+        width: 100%;
+        display: block;
+        height: 100%;
+        object-fit: cover;
+    }
+}
+
+.css3d {
+    transform-style: preserve-3d;
+    perspective: 100px;
+    perspective-origin: 50% 50%
+
 }

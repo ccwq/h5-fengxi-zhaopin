@@ -565,6 +565,19 @@ p.nominalBounds = new cjs.Rectangle(0,0,332,523);
 }).prototype = getMCSymbolPrototype(lib.主背景_1, new cjs.Rectangle(0,0,414,710), null);
 
 
+(lib.pg1 = function(mode,startPosition,loop) {
+	this.initialize(mode,startPosition,loop,{});
+
+	// 图层_1
+	this.instance = new lib.主背景_1();
+	this.instance.parent = this;
+	this.instance.setTransform(0,-13,1,1,0,0,0,0,-13);
+
+	this.timeline.addTween(cjs.Tween.get(this.instance).wait(1));
+
+}).prototype = getMCSymbolPrototype(lib.pg1, new cjs.Rectangle(0,0,414,710), null);
+
+
 // stage content:
 (lib.greatYear = function(mode,startPosition,loop) {
 	this.initialize(mode,startPosition,loop,{});
@@ -577,29 +590,47 @@ p.nominalBounds = new cjs.Rectangle(0,0,332,523);
 	// actions tween:
 	this.timeline.addTween(cjs.Tween.get(this).call(this.frame_0).wait(1));
 
-	// 3
+	// 4
 	this.instance = new lib.主背景_1();
 	this.instance.parent = this;
-	this.instance.setTransform(1226.4,-13,1,1,0,0,0,0,-13);
+	this.instance.setTransform(2931.8,-13,1,1,0,0,0,0,-13);
 
-	this.timeline.addTween(cjs.Tween.get(this.instance).wait(1));
-
-	// 1
 	this.instance_1 = new lib.主背景_1();
 	this.instance_1.parent = this;
-	this.instance_1.setTransform(678.1,-13,1,1,0,0,0,0,-13);
+	this.instance_1.setTransform(2358.7,-13,1,1,0,0,0,0,-13);
 
-	this.timeline.addTween(cjs.Tween.get(this.instance_1).wait(1));
+	this.timeline.addTween(cjs.Tween.get({}).to({state:[{t:this.instance_1},{t:this.instance}]}).wait(1));
 
-	// startup
-	this.instance_2 = new lib.启动器();
+	// 3
+	this.instance_2 = new lib.主背景_1();
 	this.instance_2.parent = this;
-	this.instance_2.setTransform(98.5,-115);
+	this.instance_2.setTransform(1818.5,-13,1,1,0,0,0,0,-13);
 
 	this.timeline.addTween(cjs.Tween.get(this.instance_2).wait(1));
 
+	// 2
+	this.instance_3 = new lib.主背景_1();
+	this.instance_3.parent = this;
+	this.instance_3.setTransform(1226.4,-13,1,1,0,0,0,0,-13);
+
+	this.timeline.addTween(cjs.Tween.get(this.instance_3).wait(1));
+
+	// 1
+	this.instance_4 = new lib.pg1();
+	this.instance_4.parent = this;
+	this.instance_4.setTransform(641.1,-6.5,1,1,0,0,0,0,-6.5);
+
+	this.timeline.addTween(cjs.Tween.get(this.instance_4).wait(1));
+
+	// startup
+	this.instance_5 = new lib.启动器();
+	this.instance_5.parent = this;
+	this.instance_5.setTransform(98.5,-115);
+
+	this.timeline.addTween(cjs.Tween.get(this.instance_5).wait(1));
+
 }).prototype = p = new cjs.MovieClip();
-p.nominalBounds = new cjs.Rectangle(207,167,1640.4,898.1);
+p.nominalBounds = new cjs.Rectangle(207,167,3345.8,898.1);
 // library properties:
 lib.properties = {
 	id: '1CC7DBE24B030841BB8D6B97021A3168',

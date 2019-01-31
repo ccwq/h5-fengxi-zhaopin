@@ -1,6 +1,7 @@
 var EaseOptions = {
     elastic:Elastic.easeOut.config(1, 0.3),
     default:Power3.easeOut,
+    power:Power4.easeOut,
 }
 
 var Class_Pagemgr = (function(config){
@@ -111,13 +112,14 @@ var Class_Pagemgr = (function(config){
             var tx = $(m.sett.textContent).find(">*")
             $(".pageShadow",$scroll).each(function(i,el){
                 var $el = $(el);
+                var _$el = $el;
 
                 var page = m.list[i];
 
                 tx.eq(i).appendTo($el);
                 m.pageShadowList.push($el);
 
-                var res = _.sortBy($el.find("[gs-para]").toArray(),function(el){
+                var res = _.sortBy($el.find("[gs-para], .gs-text-effect, .imgGridCont").toArray(),function(el){
                     return el.getAttribute("gs-sort-index")*1;
                 })
 
@@ -135,18 +137,62 @@ var Class_Pagemgr = (function(config){
                 }
 
                 res.forEach(function(el,i){
-                    var method = el.getAttribute("gs-method") || "from";
-                    var para = el.getAttribute("gs-para");
-                    para = para.replace(/([^{}:,\s]+)?\:/g,function(all,cap1){return "\""+cap1+"\":"});
-                    para = JSON.parse(para);
-                    var dura = el.getAttribute("gs-dura") || 1;
-                    var timeOffset = el.getAttribute("gs-time-offset");
-                    if(timeOffset===undefined) {
-                        tl.add(TweenMax[method](el,dura,para))
-                        // tl.add(TweenMax.fromTo(el,dura,para, {y:0}))
+                    var $el = $(el);
+
+                    if($el.is(".gs-text-effect")) {
+                        $el.find("b").each(function () {
+                            tl.add(TweenMax.from(this, 0.6, {y: "+=16", alpha: 0}), "-=0.55")
+                        });
+                    }else if($el.is(".imgGridCont")){
+                        $el.find(">span").each(function () {
+                            tl.add(TweenMax.from(this, 1.6, {scale:0.6, y:"+=10", alpha: 0, ease:EaseOptions.elastic}), "-=1.25")
+                        });
                     }else{
-                        tl.add(TweenMax[method](el,dura,para),timeOffset)
+                        var method = el.getAttribute("gs-method") || "from";
+                        var para = el.getAttribute("gs-para");
+                        para = para.replace(/([^{}:,\s]+)?\:/g,function(all,cap1){return "\""+cap1+"\":"});
+                        para = JSON.parse(para);
+                        if(EaseOptions[para.ease]){
+                            para.ease = EaseOptions[para.ease];
+                        }else{
+                            para.ease = EaseOptions.default;
+                        }
+                        var dura = el.getAttribute("gs-dura") || 1;
+                        var timeOffset = el.getAttribute("gs-time-offset");
+
+
+                        if (para.addClass || para.rmClass) {
+                            tl.add(function(){
+                                var target;
+                                if (!para.target) {
+                                    target = $el;
+                                }else{
+                                    target = $(para.target, _$el)
+                                }
+                                if (para.addClass) {
+                                    target.addClass(para.addClass);
+                                }
+
+                                if (para.rmClass) {
+                                    target.removeClass(para.rmClass);
+                                }
+                            },timeOffset)
+                        }else{
+                            if(timeOffset===undefined) {
+                                tl.add(TweenMax[method](el,dura,para));
+                                // tl.add(TweenMax.fromTo(el,dura,para, {y:0}))
+                            }else{
+                                tl.add(TweenMax[method](el,dura,para),timeOffset);
+                            }
+                        }
+
+
+
+
+
                     }
+
+
                 });
                 tl.stop();
             });

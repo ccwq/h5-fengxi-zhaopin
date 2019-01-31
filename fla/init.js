@@ -42,7 +42,7 @@ function handleFileLoad(evt) {
 
 
 $(function(){
-    var txlist = ["祝福加载中···","祝福加载中··","祝福加载中·","祝福加载中"];
+    var txlist = ["加载中···","加载中··","加载中·","加载中"];
 
     $loading = $("<div class='loading'><span></span></div>");
     $loadingspan = $loading.find("span").html(txlist[0]);

@@ -1,0 +1,89 @@
+@import "vars.less";
+@import "t2.less";
+@import "font";
+
+b{
+    font-weight: inherit;
+}
+
+.h2{
+    background: url("../assets/titlebg.gif") no-repeat 50% 50%;
+    background-size: contain;
+    font-size: 1.2em;
+    font-weight: 500;
+    margin-bottom: 0.5em;
+
+    p{
+        font-size: 0.8em;
+        line-height: 1.2em;
+        margin: auto;
+    }
+}
+
+.pageShadow {
+    color: #eee;
+}
+
+.panel-allen{
+    margin-top: 1em;
+    background-color: fade(#fff, 100%);
+    min-height: 50vh;
+    text-align: left;
+    padding: 1.5em;
+    font-size: 0.9em;
+    line-height: 1.2em;
+    color: @grey600;
+    p {
+        margin-top: 0.25em;
+        margin-bottom: 0.75em;
+        position: relative;
+        z-index: 10;
+    }
+
+    b.label{
+        display: inline-block;
+        line-height: 1em;
+        padding: 3px 0.5em;
+        background-color: @grey800;
+        //color: @red100;
+        margin-bottom: 0.25em;
+        color: @yellow500;
+
+    }
+
+    p>span{
+        display: block;
+        font-size: 1em;
+    }
+
+    &:before,&:after{
+        position: absolute;
+        content:"";
+        width: 100%;
+        height: 100%;
+        background-color: fade(@grey50, 75%);
+        top: 0;
+        left: 0;
+    }
+
+
+    &.transi{
+
+    }
+
+    &:before{
+        transition: all 0.4s;
+    }
+    &:after{
+        transition: all 0.6s;
+    }
+
+    &.expand{
+        &:before{
+            transform: rotate(2deg);
+        }
+        &:after{
+            transform: rotate(-3deg);
+        }
+    }
+}
