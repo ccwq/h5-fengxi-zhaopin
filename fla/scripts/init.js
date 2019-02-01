@@ -333,19 +333,9 @@ function enableTouchSlide(){
     //微信配置，使播放音频
     setTimeout(function(){
         $(".musicCtr")[0].play();
-        wx.config({
-            // 配置信息, 即使不正确也能使用 wx.ready
-            debug: false,
-            appId: '',
-            timestamp: 1,
-            nonceStr: '',
-            signature: '',
-            jsApiList: []
-        });
-
-        wx.ready(function() {
+        wechatAbout(function(){
             $(".musicCtr")[0].play();
-        });
+        })
     })
 }
 
@@ -369,4 +359,118 @@ function clearChartIframe(iframe){
     if(iframe.contentWindow){
         iframe.contentWindow.clear();
     }
+}
+
+
+
+function wechatAbout(readyCallback){
+
+    //分享标题
+    var title = "分享标题测试";
+    //分享描述
+    var desc = "分享描述测试";
+    //分享图片完整网址
+    var imgUrl='https://www.211zph.com/images/logo211zph.png';
+    var link = window.location.href;
+    $.ajax({
+        url:'/mobile/jsapiSignature.do',
+        method:'POST',
+        data:{
+            url: encodeURIComponent( link ),
+        },
+        dataType:'json',
+        success:function( data ){
+            wxShareConfig( data );
+        }
+    });
+    function wxShareConfig( option ){
+        wx.config({
+            debug: false,
+            appId: option.appid,
+            timestamp: option.timestamp,
+            nonceStr: option.noncestr,
+            signature: option.signature,
+            jsApiList: [
+                'checkJsApi',
+                'onMenuShareTimeline',
+                'onMenuShareAppMessage',
+                'onMenuShareQQ',
+                'onMenuShareWeibo',
+                'onMenuShareQZone',
+                'hideMenuItems',
+                'showMenuItems',
+                'hideAllNonBaseMenuItem',
+                'showAllNonBaseMenuItem',
+                'addContact',
+                'profile'
+            ]
+        });
+        wx.ready(function(){
+
+            readyCallback(wx);
+
+            wx.onMenuShareTimeline({
+                title: title, // 分享标题
+                link: link, // 分享链接
+                imgUrl: imgUrl, // 分享图标
+                success: function () {
+                    //alert("ok");
+                },
+                cancel: function () {
+                    //alert("cancel");
+                }
+            });
+            wx.onMenuShareAppMessage({
+                title: title, // 分享标题
+                desc: desc, // 分享描述
+                link: link, // 分享链接
+                imgUrl:imgUrl, // 分享图标
+                type: 'link', // 分享类型,music、video或link，不填默认为link
+                dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
+                success: function () {
+                    //alert("okapp");
+                },
+                cancel: function () {
+                    //alert("cancelapp");
+                }
+            });
+            wx.onMenuShareQQ({
+                title: title, // 分享标题
+                desc: desc, // 分享描述
+                link: link, // 分享链接
+                imgUrl: imgUrl, // 分享图标
+                success: function () {
+                    // 用户确认分享后执行的回调函数
+                },
+                cancel: function () {
+                    // 用户取消分享后执行的回调函数
+                }
+            });
+            wx.onMenuShareWeibo({
+                title: title, // 分享标题
+                desc:desc, // 分享描述
+                link: link, // 分享链接
+                imgUrl:imgUrl, // 分享图标
+                success: function () {
+                    // 用户确认分享后执行的回调函数
+                },
+                cancel: function () {
+                    // 用户取消分享后执行的回调函数
+                }
+            });
+            wx.onMenuShareQZone({
+                title: title, // 分享标题
+                desc: desc, // 分享描述
+                link:link, // 分享链接
+                imgUrl: imgUrl, // 分享图标
+                success: function () {
+                    // 用户确认分享后执行的回调函数
+                },
+                cancel: function () {
+                    // 用户取消分享后执行的回调函数
+                }
+            });
+        });
+    }
+
 }
