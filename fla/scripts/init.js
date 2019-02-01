@@ -1,3 +1,4 @@
+var base = Array.prototype.concat.apply([], document.scripts).pop().src.split("scripts")[0]
 var canvas, stage, exportRoot, anim_container, dom_overlay_container, fnStartAnimation;
 
 
@@ -367,15 +368,21 @@ function setIframeSrc(iframe, i, src){
 }
 
 function initSlider(el, i, src){
-    var mySwiper = new Swiper (el, {
-        loop: true, // 循环模式选项
-        autoplay: {
-            delay: 3000,
-            stopOnLastSlide: false,
-            disableOnInteraction: true,
-        }
-    })
+    if (!el.inited) {
+        el.inited = true;
+        var mySwiper = new Swiper (el, {
+            loop: true, // 循环模式选项
+            autoplay: {
+                delay: 1800,
+                stopOnLastSlide: false,
+                disableOnInteraction: true,
+            }
+        });
+    }
+
 }
+
+
 
 
 
@@ -387,7 +394,11 @@ function wechatAbout(readyCallback){
     //分享描述
     var desc = "2019年2月18日（正月十四）";
     //分享图片完整网址
-    var imgUrl='https://www.211zph.com/h5/zhaopin2019-10/assets/page-thumb.png';
+
+
+
+    var imgUrl=base + 'assets/page-thumb.png';
+    console.log(imgUrl);
     var link = window.location.href;
     $.ajax({
         url:'/mobile/jsapiSignature.do',
