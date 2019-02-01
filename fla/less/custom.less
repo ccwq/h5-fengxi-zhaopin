@@ -157,7 +157,7 @@ b{
     &.t4{background-image: url(../assets/block-title-4.png) !important;}
     &.t5{background-image: url(../assets/block-title-5.png) !important;}
     &.t6{background-image: url(../assets/block-title-6.png) !important;}
-    &.t7{background-image: url(../assets/block-title-7.png) !important;}
+    &.t12{background-image: url(../assets/block-title-12.png) !important;}
     ._size-rem(665, 58);
     &:extend(.__center);
 }
@@ -192,6 +192,28 @@ b{
 .font-lite{.px2rem(font-size, 26);}
 .font-mid{.px2rem(font-size, 30);}
 .font-big{.px2rem(font-size, 33);}
+
+
+.tx1{
+    &:extend(.__icon);
+    background-image: url(../assets/page4-tx.png) !important;
+    ._size-rem(562, 48);
+    &:extend(.__center);
+}
+
+.tx2{
+    &:extend(.__icon);
+    background-image: url(../assets/yao-qing-han.png) !important;
+    ._size-rem(445, 222);
+    &:extend(.__center);
+}
+
+.tx4{
+    &:extend(.__icon);
+    background-image: url(../assets/tx4.png) !important;
+    ._size-rem(700, 161);
+    &:extend(.__center);
+}
 
 .box-item{
     &:extend(.__icon);
@@ -237,13 +259,27 @@ b{
     border-bottom: none;
 }
 
-.page4{
-    .tx1{
-        &:extend(.__icon);
-        background-image: url(../assets/page4-tx.png) !important;
-        ._size-rem(562, 48);
-        &:extend(.__center);
+.page2{
+    .slider{
+        .px2rem(padding, 15)
     }
+
+    .swiper-container {
+        ._size-rem(600, 280);
+
+        .swiper-slide{
+            img{
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+
+            }
+        }
+    }
+}
+
+.page4{
+
 }
 
 .page6{
@@ -318,6 +354,17 @@ b{
                 width: 96%;
             }
         }
+    }
+}
+
+
+.page8{
+    .box-gold-border{
+        padding: 10px;
+    }
+    iframe{
+        height: 15em;
+        width: 100%;
     }
 }
 

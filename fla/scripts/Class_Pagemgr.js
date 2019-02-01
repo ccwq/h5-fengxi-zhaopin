@@ -151,7 +151,12 @@ var Class_Pagemgr = (function(config){
                         var method = el.getAttribute("gs-method") || "from";
                         var para = el.getAttribute("gs-para");
                         para = para.replace(/([^{}:,\s]+)?\:/g,function(all,cap1){return "\""+cap1+"\":"});
-                        para = JSON.parse(para);
+                        try{
+                            para = JSON.parse(para);
+                        }catch (e) {
+                            console.error("json解析失败");
+                            console.log(para);
+                        }
                         if(EaseOptions[para.ease]){
                             para.ease = EaseOptions[para.ease];
                         }else{
@@ -190,10 +195,11 @@ var Class_Pagemgr = (function(config){
                             args.unshift($el);
                             args.unshift(target);
 
-                            tl.add(function(){
-                                window[para.call].apply(null, args);
-                            },timeOffset);
-
+                            tl.add(
+                                $.proxy(function(name, args){
+                                    window[name].apply(null, args);
+                                }, null, para.call, args)
+                            )
                         }else{
                             var tar;
                             if (para.tweenChilds) {

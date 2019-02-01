@@ -305,7 +305,6 @@ function enableTouchSlide(){
     }
 
 
-
     //声音控制相关代码
     $("body")
         .append("<div class='musicIcon spining'>" +
@@ -356,21 +355,39 @@ function drawChartIframe(iframe, current, url){
 
 function clearChartIframe(iframe){
     iframe = iframe[0] || iframe;
-    if(iframe.contentWindow){
+    if(iframe.contentWindow && iframe.contentWindow.clear){
         iframe.contentWindow.clear();
     }
 }
+
+
+function setIframeSrc(iframe, i, src){
+    iframe = iframe[0] || iframe;
+    iframe.src = src;
+}
+
+function initSlider(el, i, src){
+    var mySwiper = new Swiper (el, {
+        loop: true, // 循环模式选项
+        autoplay: {
+            delay: 3000,
+            stopOnLastSlide: false,
+            disableOnInteraction: true,
+        }
+    })
+}
+
 
 
 
 function wechatAbout(readyCallback){
 
     //分享标题
-    var title = "分享标题测试";
+    var title = "春风行动邀请函";
     //分享描述
-    var desc = "分享描述测试";
+    var desc = "2019年2月18日（正月十四）";
     //分享图片完整网址
-    var imgUrl='https://www.211zph.com/images/logo211zph.png';
+    var imgUrl='https://www.211zph.com/h5/zhaopin2019-10/assets/page-thumb.png';
     var link = window.location.href;
     $.ajax({
         url:'/mobile/jsapiSignature.do',
