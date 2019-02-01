@@ -383,7 +383,7 @@ function initSlider(el, i, src){
 function wechatAbout(readyCallback){
 
     //分享标题
-    var title = "春风行动邀请函";
+    var title = "2019沣西新城春风行动招聘会";
     //分享描述
     var desc = "2019年2月18日（正月十四）";
     //分享图片完整网址
